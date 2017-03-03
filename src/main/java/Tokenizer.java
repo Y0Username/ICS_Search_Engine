@@ -4,6 +4,8 @@
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -26,11 +28,11 @@ public class Tokenizer {
 
     public static void main(String[] args) throws IOException {
         List<File> allFiles = new ArrayList<File>();
-        walker("/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW", allFiles);
+        walker("/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/walks", allFiles);
         Map<String, List<Posting>> postingListMap = new HashMap<String, List<Posting>>();
         for(File files: allFiles) {
             Map<String, Posting> postingMap = new HashMap<String, Posting>();
-            String docID = files.toString().replaceAll("/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW/","");
+            String docID = files.toString().replaceAll("/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/walks/","");
             String bText;
             try {
                 Document doc = Jsoup.parse(files, "UTF-8");
@@ -69,9 +71,25 @@ public class Tokenizer {
                 }
                 else{
                     List<Posting> postingList = new ArrayList<Posting>();
+                    postingList.add(postingMap.get(term));
                     postingListMap.put(term, postingList);
                 }
             }
+        }
+        //Printing the final Postings List for each term
+        for(String terms : postingListMap.keySet()){
+            System.out.println("Term: " + terms);
+            List<Posting> postingList = postingListMap.get(terms);
+            for(Posting pList : postingList){
+                System.out.println("DocID: " + pList.getDocID().toString());
+                System.out.println("Term Frequency: " + pList.getTermFreq());
+                System.out.print("Positions:");
+                for(Integer posi : pList.getPositions()){
+                    System.out.print(" " + posi);
+                }
+                System.out.println();
+            }
+            System.out.println();
         }
     }
 }
