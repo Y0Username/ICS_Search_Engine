@@ -1,24 +1,26 @@
+package com.se.data;
 import java.util.List;
 
 /**
  * Created by Yathish on 3/2/17.
  */
+
 public class Posting {
-    private String docID;
+    private Integer docID;
     private Integer termFreq;
     private List<Integer> positions;
 
-    public Posting(String docID, Integer termFreq, List<Integer> positions) {
+    public Posting(Integer docID, Integer termFreq, List<Integer> positions) {
         this.docID = docID;
         this.termFreq = termFreq;
         this.positions = positions;
     }
 
-    public String getDocID() {
+    public Integer getDocID() {
         return docID;
     }
 
-    public void setDocID(String docID) {
+    public void setDocID(Integer docID) {
         this.docID = docID;
     }
 
