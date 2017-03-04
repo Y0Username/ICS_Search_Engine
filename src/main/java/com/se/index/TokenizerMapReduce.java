@@ -28,7 +28,7 @@ public class TokenizerMapReduce {
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
-		private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
+		private static final String PATH = "Project/webpages_raw/";
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
