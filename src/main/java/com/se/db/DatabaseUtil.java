@@ -30,4 +30,8 @@ public class DatabaseUtil {
 	public void insert(Collection<WordEntry> wordEntries) {
 		datastore.save(wordEntries);
 	}
+	
+	public void insert(WordEntry wordEntry) {
+		datastore.save(wordEntry);
+	}	
 }

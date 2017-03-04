@@ -3,11 +3,9 @@ package com.se.index;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -57,7 +55,6 @@ public class TokenizerMapReduce {
 		private static Gson gson = new Gson();
 		public void reduce(Text term, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			Set<WordEntry> wordEntries = new HashSet<WordEntry>();
 			WordEntry wordEntry = new WordEntry();
 			wordEntry.setTerm(term.toString());
 			List<Posting> postings = new ArrayList<Posting>();
@@ -66,8 +63,7 @@ public class TokenizerMapReduce {
 			}
 			wordEntry.setPostings(postings);
 			wordEntry.setDocFrq(postings.size());
-			wordEntries.add(wordEntry);
-			db.insert(wordEntries);
+			db.insert(wordEntry);
 		}
 	}
 
