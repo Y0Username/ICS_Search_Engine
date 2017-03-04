@@ -25,7 +25,7 @@ import com.se.db.DatabaseUtil;
 public class TokenizerMapReduce {
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
-		
+
 		private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
 		private static Gson gson = new Gson();
 
@@ -36,7 +36,7 @@ public class TokenizerMapReduce {
 				return;
 			}
 			String fileName = itr.nextToken();
-//			String url = itr.nextToken();
+			// String url = itr.nextToken();
 			String[] parts = fileName.split("/");
 			int docID = 500 * Integer.valueOf(parts[0])
 					+ Integer.valueOf(parts[1]);
@@ -53,6 +53,7 @@ public class TokenizerMapReduce {
 	public static class PostingsReducer extends Reducer<Text, Text, Text, Text> {
 		private static DatabaseUtil db = new DatabaseUtil();
 		private static Gson gson = new Gson();
+
 		public void reduce(Text term, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
 			WordEntry wordEntry = new WordEntry();

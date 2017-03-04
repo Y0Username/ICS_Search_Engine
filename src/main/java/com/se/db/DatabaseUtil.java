@@ -5,6 +5,7 @@ package com.se.db;
  */
 import java.util.Collection;
 
+import org.bson.BsonSerializationException;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -30,8 +31,16 @@ public class DatabaseUtil {
 	public void insert(Collection<WordEntry> wordEntries) {
 		datastore.save(wordEntries);
 	}
-	
+
 	public void insert(WordEntry wordEntry) {
-		datastore.save(wordEntry);
-	}	
+		try {
+			datastore.save(wordEntry);
+		} catch (BsonSerializationException exception) {
+			exception.printStackTrace();
+			System.err.print("Error while inserting " + wordEntry.getTerm()
+					+ " to MongoDB");
+			System.err.print("Error while inserting " + wordEntry.getDocFrq()
+					+ " to MongoDB");
+		}
+	}
 }
