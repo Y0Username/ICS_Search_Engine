@@ -4,3 +4,5 @@
 target/*
 webindexer.iml
 data/*
+.idea/*
+web-indexer.iml
