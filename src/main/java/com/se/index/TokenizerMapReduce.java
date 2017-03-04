@@ -26,7 +26,7 @@ public class TokenizerMapReduce {
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
-		private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
+		private static final String PATH = "path";
 		private static Gson gson = new Gson();
 
 		public void map(Object key, Text value, Context context)
@@ -71,7 +71,7 @@ public class TokenizerMapReduce {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
-		String location = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/bookkeeping.tsv";
+		String location = "path/bookkeeping.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(TokenizerMapReduce.class);
 		job.setMapperClass(TokenizerMapper.class);
@@ -80,7 +80,7 @@ public class TokenizerMapReduce {
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(location));
 		FileOutputFormat.setOutputPath(job, new Path(
-				"src/test/resources/output9"));
+				"target/output9"));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
