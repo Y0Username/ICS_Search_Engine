@@ -41,6 +41,7 @@ public class TokenizerMapReduce {
 			int docID = 500 * Integer.valueOf(parts[0])
 					+ Integer.valueOf(parts[1]);
 			File file = new File(PATH + fileName);
+			
 			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID);
 
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {

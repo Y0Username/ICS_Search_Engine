@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.englishStemmer;
 
 import com.se.data.Posting;
 
@@ -32,13 +34,14 @@ public class Tokenizer {
 		}
 		bText = bText.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(bText);
-		// TODO: Stemming and stop word removal
 		int pos = 1;
 		while (m.find()) {
 			String currentWord = m.group(0);
 			if (isStopWord(currentWord)) {
 				continue;
 			}
+			
+			currentWord = stem(currentWord);
 
 			if (postingMap.containsKey(currentWord)) {
 				Posting seenTerm = postingMap.get(currentWord);
@@ -58,8 +61,18 @@ public class Tokenizer {
 		return postingMap;
 	}
 
+	private static String stem(String currentWord) {
+		SnowballStemmer snowballStemmer = new englishStemmer();
+        snowballStemmer.setCurrent(currentWord);
+        snowballStemmer.stem();
+        return snowballStemmer.getCurrent();		
+	}
+
 	private static boolean isStopWord(String currentWord) {
-		return currentWord.length() < 3;
+		if (currentWord.length() < 3) {
+			return true;
+		}
+		return false;
 	}
 
 }

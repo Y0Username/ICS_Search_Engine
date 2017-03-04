@@ -7,12 +7,17 @@
     <groupId>com.project</groupId>
     <artifactId>web-indexer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <dependencies>
+    <dependencies>    
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
             <version>3.4.2</version>
         </dependency>
+		<dependency>
+		    <groupId>com.github.rholder</groupId>
+		    <artifactId>snowball-stemmer</artifactId>
+		    <version>1.3.0.581.1</version>
+		</dependency>
 		<dependency>
 		    <groupId>org.apache.hadoop</groupId>
 		    <artifactId>hadoop-core</artifactId>
