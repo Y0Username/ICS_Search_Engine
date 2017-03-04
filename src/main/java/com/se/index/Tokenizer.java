@@ -17,6 +17,8 @@ import org.jsoup.nodes.Document;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.englishStemmer;
 
+import weka.core.Stopwords;
+
 import com.se.data.Posting;
 
 public class Tokenizer {
@@ -72,7 +74,7 @@ public class Tokenizer {
 		if (currentWord.length() < 3) {
 			return true;
 		}
-		return false;
+		return Stopwords.isStopword(currentWord);
 	}
 
 }
