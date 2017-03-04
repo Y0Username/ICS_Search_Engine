@@ -1,12 +1,13 @@
 package com.se.index;
 
-import java.io.File;
+import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
+import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -26,11 +27,21 @@ public class TokenizerMapReduce {
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
-		private static final String PATH = "path";
 		private static Gson gson = new Gson();
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
+			Properties prop = new Properties();
+			InputStream input = null;
+			String PATH = "";
+			try {
+				input = new FileInputStream("target/conf.properties");
+				prop.load(input);
+				PATH = prop.getProperty("path").toString();
+			}
+			catch (IOException ex) {
+				ex.printStackTrace();
+			}
 			StringTokenizer itr = new StringTokenizer(value.toString());
 			if (itr.countTokens() < 2) {
 				return;
@@ -71,7 +82,18 @@ public class TokenizerMapReduce {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
-		String location = "path/bookkeeping.tsv";
+		Properties prop = new Properties();
+		InputStream input = null;
+		String path = "";
+		try {
+			input = new FileInputStream("target/conf.properties");
+			prop.load(input);
+			path = prop.getProperty("path").toString();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		String location = path+"bookkeeping.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(TokenizerMapReduce.class);
 		job.setMapperClass(TokenizerMapper.class);
