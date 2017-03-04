@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
 import com.se.data.Posting;
@@ -23,10 +23,10 @@ import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
 
 public class TokenizerMapReduce {
+	private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
-		private static final String PATH = "path";
 		private static Gson gson = new Gson();
 
 		public void map(Object key, Text value, Context context)
@@ -71,16 +71,15 @@ public class TokenizerMapReduce {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
-		String location = "path/bookkeeping.tsv";
+		String fileName = "bookkeeping.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(TokenizerMapReduce.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setReducerClass(PostingsReducer.class);
+		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
-		FileInputFormat.addInputPath(job, new Path(location));
-		FileOutputFormat.setOutputPath(job, new Path(
-				"target/output9"));
+		FileInputFormat.addInputPath(job, new Path(PATH + fileName));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
