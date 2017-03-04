@@ -25,7 +25,6 @@ public class DatabaseUtil {
 
 		datastore = morphia.createDatastore(mongoClient, DATABASE_NAME);
 		datastore.ensureIndexes();
-		System.out.println("Connect to database successfully");
 	}
 
 	public void insert(Collection<WordEntry> wordEntries) {

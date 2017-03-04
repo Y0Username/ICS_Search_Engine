@@ -27,8 +27,8 @@ import com.se.db.DatabaseUtil;
 public class TokenizerMapReduce {
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
-
-		private static final String PATH = "Project/webpages_raw/";
+		
+		private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
@@ -46,13 +46,14 @@ public class TokenizerMapReduce {
 
 			Gson gson = new Gson();
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
-				context.write(new Text(entry.getKey()), new Text(gson.toJson(entry.getValue())));
+				context.write(new Text(entry.getKey()),
+						new Text(gson.toJson(entry.getValue())));
 			}
 		}
 	}
 
-	public static class PostingsReducer extends
-			Reducer<Text, Text, Text, Text> {
+	public static class PostingsReducer extends Reducer<Text, Text, Text, Text> {
+		public static DatabaseUtil db = new DatabaseUtil();
 
 		public void reduce(Text term, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
@@ -65,9 +66,8 @@ public class TokenizerMapReduce {
 				postings.add(gson.fromJson(value.toString(), Posting.class));
 			}
 			wordEntry.setPostings(postings);
+			wordEntry.setDocFrq(postings.size());
 			wordEntries.add(wordEntry);
-
-			DatabaseUtil db = new DatabaseUtil();
 			db.insert(wordEntries);
 		}
 	}
@@ -84,7 +84,7 @@ public class TokenizerMapReduce {
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(location));
 		FileOutputFormat.setOutputPath(job, new Path(
-				"src/test/resources/output5"));
+				"src/test/resources/output9"));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
