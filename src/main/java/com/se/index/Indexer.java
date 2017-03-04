@@ -14,8 +14,10 @@ import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
+import static com.se.file.FileHandler.configFetch;
+
 public class Indexer {
-	String location = "/home/magic/workspace/ICS_Search_Engine/data/0";
+	private static final String location = configFetch("path");
 
 	public void index() {
 		List<File> files = FileHandler.walker(location);
@@ -72,7 +74,4 @@ public class Indexer {
 		Indexer indexer = new Indexer();
 		indexer.index();
 	}
-
-
-
 }

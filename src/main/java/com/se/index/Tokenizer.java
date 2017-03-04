@@ -23,7 +23,7 @@ public class Tokenizer {
 
 	public static Map<String, Posting> tokenize(File file, Integer docID) {
 		Map<String, Posting> postingMap = new HashMap<String, Posting>();
-		String bText = "";
+		String bText;
 		try {
 			Document doc = Jsoup.parse(file, "UTF-8");
 			bText = doc.body().text();

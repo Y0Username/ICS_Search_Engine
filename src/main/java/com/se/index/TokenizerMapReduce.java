@@ -22,8 +22,10 @@ import com.se.data.Posting;
 import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
 
+import static com.se.file.FileHandler.configFetch;
+
 public class TokenizerMapReduce {
-	private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
+	private static final String PATH = configFetch("path");
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 

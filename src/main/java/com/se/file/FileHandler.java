@@ -1,8 +1,12 @@
 package com.se.file;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class FileHandler {
 	public static List<File> walker(String path) {
@@ -19,5 +23,20 @@ public class FileHandler {
 			}
 		}
 		return files;
-	}	
+	}
+
+	public static String configFetch(String key){
+		Properties prop = new Properties();
+		InputStream input;
+		String value = "";
+		try {
+			input = new FileInputStream("target/conf.properties");
+			prop.load(input);
+			value = prop.getProperty(key).toString();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return value;
+	}
 }
