@@ -29,6 +29,7 @@ public class TokenizerMapReduce {
 			Mapper<Object, Text, Text, Text> {
 		
 		private static final String PATH = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
+		private static Gson gson = new Gson();
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
@@ -37,14 +38,13 @@ public class TokenizerMapReduce {
 				return;
 			}
 			String fileName = itr.nextToken();
-			String url = itr.nextToken();
+//			String url = itr.nextToken();
 			String[] parts = fileName.split("/");
 			int docID = 500 * Integer.valueOf(parts[0])
 					+ Integer.valueOf(parts[1]);
 			File file = new File(PATH + fileName);
 			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID);
 
-			Gson gson = new Gson();
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
 				context.write(new Text(entry.getKey()),
 						new Text(gson.toJson(entry.getValue())));
@@ -53,15 +53,14 @@ public class TokenizerMapReduce {
 	}
 
 	public static class PostingsReducer extends Reducer<Text, Text, Text, Text> {
-		public static DatabaseUtil db = new DatabaseUtil();
-
+		private static DatabaseUtil db = new DatabaseUtil();
+		private static Gson gson = new Gson();
 		public void reduce(Text term, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
 			Set<WordEntry> wordEntries = new HashSet<WordEntry>();
 			WordEntry wordEntry = new WordEntry();
 			wordEntry.setTerm(term.toString());
 			List<Posting> postings = new ArrayList<Posting>();
-			Gson gson = new Gson();
 			for (Text value : values) {
 				postings.add(gson.fromJson(value.toString(), Posting.class));
 			}
