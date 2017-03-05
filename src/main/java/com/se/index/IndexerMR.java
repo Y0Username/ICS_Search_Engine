@@ -1,7 +1,5 @@
 package com.se.index;
 
-import static com.se.file.FileHandler.configFetch;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
-import com.se.file.FileHandler;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
@@ -25,8 +22,9 @@ import com.google.gson.Gson;
 import com.se.data.Posting;
 import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
+import com.se.file.FileHandler;
 
-public class TokenizerMapReduce {
+public class IndexerMR {
 	private static final String PATH = FileHandler.configFetch("path");
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
@@ -79,7 +77,7 @@ public class TokenizerMapReduce {
 		Configuration conf = new Configuration();
 		String fileName = "bookkeeping1.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
-		job.setJarByClass(TokenizerMapReduce.class);
+		job.setJarByClass(IndexerMR.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setReducerClass(PostingsReducer.class);
 		job.setOutputFormatClass(NullOutputFormat.class);
