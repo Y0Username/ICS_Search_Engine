@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
+import com.se.file.FileHandler;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
@@ -22,10 +23,8 @@ import com.se.data.Posting;
 import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
 
-import static com.se.file.FileHandler.configFetch;
-
 public class TokenizerMapReduce {
-	private static final String PATH = configFetch("path");
+	private static final String PATH = FileHandler.configFetch("path");
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
