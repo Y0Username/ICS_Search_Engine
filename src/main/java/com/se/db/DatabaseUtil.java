@@ -36,11 +36,9 @@ public class DatabaseUtil {
 		try {
 			datastore.save(wordEntry);
 		} catch (BsonSerializationException exception) {
-			exception.printStackTrace();
 			System.err.print("Error while inserting " + wordEntry.getTerm()
-					+ " to MongoDB");
-			System.err.print("Error while inserting " + wordEntry.getDocFrq()
-					+ " to MongoDB");
+					+ " " + wordEntry.getDocFrq() + " to MongoDB");
+			System.err.println(exception);
 		}
 	}
 }

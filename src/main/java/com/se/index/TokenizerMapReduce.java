@@ -1,8 +1,11 @@
 package com.se.index;
 
+import static com.se.file.FileHandler.configFetch;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,8 +24,6 @@ import com.google.gson.Gson;
 import com.se.data.Posting;
 import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
-
-import static com.se.file.FileHandler.configFetch;
 
 public class TokenizerMapReduce {
 	private static final String PATH = configFetch("path");
@@ -65,6 +66,7 @@ public class TokenizerMapReduce {
 			for (Text value : values) {
 				postings.add(gson.fromJson(value.toString(), Posting.class));
 			}
+			Collections.sort(postings);
 			wordEntry.setPostings(postings);
 			wordEntry.setDocFrq(postings.size());
 			db.insert(wordEntry);
@@ -74,7 +76,7 @@ public class TokenizerMapReduce {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
-		String fileName = "bookkeeping.tsv";
+		String fileName = "bookkeeping1.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(TokenizerMapReduce.class);
 		job.setMapperClass(TokenizerMapper.class);

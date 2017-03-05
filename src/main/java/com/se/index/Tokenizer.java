@@ -5,9 +5,8 @@ package com.se.index;
  */
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,36 +28,30 @@ public class Tokenizer {
 		try {
 			Document doc = Jsoup.parse(file, "UTF-8");
 			bText = doc.body().text();
-		} catch (Exception e) {
-			System.out.println(file);
-			System.out.println("Error while parsing: " + e);
+		} catch (IOException e) {
+			System.err.println(file);
+			System.err.println("Error while parsing. " + e);
 			return postingMap;
 		}
 		bText = bText.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(bText);
-		int pos = 1;
+		int wordPosition = 1;
 		while (m.find()) {
 			String currentWord = m.group(0);
+			currentWord = stem(currentWord);
 			if (isStopWord(currentWord)) {
 				continue;
 			}
-			
-			currentWord = stem(currentWord);
 
 			if (postingMap.containsKey(currentWord)) {
 				Posting seenTerm = postingMap.get(currentWord);
-				seenTerm.setTermFreq((seenTerm.getTermFreq() + 1));
-				List<Integer> posList = seenTerm.getPositions();
-				posList.add(pos);
-				seenTerm.setPositions(posList);
+				seenTerm.addPosition(wordPosition);
 				postingMap.put(currentWord, seenTerm);
 			} else {
-				List<Integer> posList = new ArrayList<Integer>();
-				posList.add(pos);
-				Posting newTerm = new Posting(docID, 1, posList);
+				Posting newTerm = new Posting(docID, wordPosition);
 				postingMap.put(currentWord, newTerm);
 			}
-			pos++;
+			wordPosition++;
 		}
 		return postingMap;
 	}

@@ -35,7 +35,7 @@ public class FileHandler {
 			value = prop.getProperty(key).toString();
 		}
 		catch (IOException ex) {
-			ex.printStackTrace();
+			System.err.println(ex);;
 		}
 		return value;
 	}
