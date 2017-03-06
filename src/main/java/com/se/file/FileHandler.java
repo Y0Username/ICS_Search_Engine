@@ -30,7 +30,7 @@ public class FileHandler {
 		InputStream input;
 		String value = "";
 		try {
-			input = new FileInputStream("target/conf.properties");
+			input = new FileInputStream("src/main/resources/configuration.properties");
 			prop.load(input);
 			value = prop.getProperty(key).toString();
 		}
