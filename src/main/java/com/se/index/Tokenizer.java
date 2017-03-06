@@ -28,7 +28,7 @@ public class Tokenizer {
 		try {
 			Document doc = Jsoup.parse(file, "UTF-8");
 			bText = doc.body().text();
-		} catch (IOException e) {
+		} catch (IOException|NullPointerException|IllegalArgumentException e) {
 			System.err.println(file);
 			System.err.println("Error while parsing. " + e);
 			return postingMap;
