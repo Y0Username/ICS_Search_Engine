@@ -25,7 +25,8 @@ import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
 public class IndexerMR {
-	private static final String PATH = FileHandler.configFetch("path");
+	private static final String PATH = "path";
+
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
@@ -33,17 +34,19 @@ public class IndexerMR {
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
+			Configuration conf = context.getConfiguration();
+			String path = conf.get(PATH);
 			StringTokenizer itr = new StringTokenizer(value.toString());
 			if (itr.countTokens() < 2) {
 				return;
 			}
-			String fileName = itr.nextToken();
+			String filePath = itr.nextToken();
 			// String url = itr.nextToken();
-			String[] parts = fileName.split("/");
+			String[] parts = filePath.split("/");
 			int docID = 500 * Integer.valueOf(parts[0])
 					+ Integer.valueOf(parts[1]);
-			File file = new File(PATH + fileName);
-			
+			File file = new File(path + filePath);
+
 			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID);
 
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
@@ -75,7 +78,9 @@ public class IndexerMR {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
-		String fileName = "bookkeeping1.tsv";
+		String path = FileHandler.configFetch(PATH);
+		conf.set(PATH, path);
+		String fileName = "bookkeeping.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(IndexerMR.class);
 		job.setMapperClass(TokenizerMapper.class);
@@ -83,7 +88,7 @@ public class IndexerMR {
 		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
-		FileInputFormat.addInputPath(job, new Path(PATH + fileName));
+		FileInputFormat.addInputPath(job, new Path(path + fileName));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
