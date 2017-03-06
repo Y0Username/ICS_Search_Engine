@@ -52,8 +52,7 @@
     of the mapper are combined by the reducer and the data is processed
     to produce the new output.
 
-![](media/image1.png){width="5.994711286089239in"
-height="3.367843394575678in"}
+![](media/image1.png)
 
 **Fig. 1 Map-Reduce example** (Source -
 http://www.glennklockwood.com/data-intensive/hadoop/mapreduce-workflow.png)
@@ -87,8 +86,7 @@ http://www.glennklockwood.com/data-intensive/hadoop/mapreduce-workflow.png)
 
 ***Statistics of Collection in MongoDB***
 
-(media/image2.png){width="7.112018810148731in"
-height="4.257094269466316in"}
+![](media/image2.png)
 
 ***Total size of the collection***
 
@@ -108,8 +106,6 @@ reconnect 127.0.0.1:27017 (127.0.0.1) ok\
 
 ***Examples of Postings***
 
-![](media/image3.png){width="6.492361111111111in"
-height="4.522916666666666in"}
+![](media/image3.png)
 
-![](media/image4.png){width="6.492361111111111in"
-height="4.492361111111111in"}
+![](media/image4.png)
