@@ -87,7 +87,7 @@ http://www.glennklockwood.com/data-intensive/hadoop/mapreduce-workflow.png)
 
 ***Statistics of Collection in MongoDB***
 
-![../../../Downloads/Yathish/Screen%20Shot%202017-03-03%20at%2010.36.30%20P](media/image2.png){width="7.112018810148731in"
+(media/image2.png){width="7.112018810148731in"
 height="4.257094269466316in"}
 
 ***Total size of the collection***
@@ -108,8 +108,8 @@ reconnect 127.0.0.1:27017 (127.0.0.1) ok\
 
 ***Examples of Postings***
 
-![../../../Downloads/Yathish/Screen%20Shot%202017-03-03%20at%2010.20.16%20P](media/image3.png){width="6.492361111111111in"
+![](media/image3.png){width="6.492361111111111in"
 height="4.522916666666666in"}
 
-![../../../Downloads/Yathish/Screen%20Shot%202017-03-03%20at%2010.43.31%20P](media/image4.png){width="6.492361111111111in"
+![](media/image4.png){width="6.492361111111111in"
 height="4.492361111111111in"}
