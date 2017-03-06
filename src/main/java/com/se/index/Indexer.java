@@ -13,11 +13,10 @@ import com.se.data.Posting;
 import com.se.data.WordEntry;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
-
-import static com.se.file.FileHandler.configFetch;
+import com.se.util.MapPrinter;
 
 public class Indexer {
-	private static final String location = configFetch("path");
+	private static final String location = FileHandler.configFetch("path");
 
 	public void index() {
 		List<File> files = FileHandler.walker(location);
@@ -50,24 +49,7 @@ public class Indexer {
 		DatabaseUtil db = new DatabaseUtil();
 		db.insert(wordEntries);
 
-		print(postingListMap);
-	}
-	
-	private void print(Map<String, List<Posting>> postingListMap) {
-		for (String terms : postingListMap.keySet()) {
-			System.out.println("Term: " + terms);
-			List<Posting> postingList = postingListMap.get(terms);
-			for (Posting pList : postingList) {
-				System.out.println("DocID: " + pList.getDocID().toString());
-				System.out.println("Term Frequency: " + pList.getTermFreq());
-				System.out.print("Positions:");
-				for (Integer posi : pList.getPositions()) {
-					System.out.print(" " + posi);
-				}
-				System.out.println();
-			}
-			System.out.println();
-		}
+		MapPrinter.print(postingListMap);
 	}
 
 	public static void main(String[] args) {
