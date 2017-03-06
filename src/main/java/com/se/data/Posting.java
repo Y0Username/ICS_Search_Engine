@@ -17,18 +17,18 @@ public class Posting implements Comparable<Posting> {
 		this.positions = positions;
 		this.termFreq = positions.size();
 	}
-	
+
 	public Posting(Integer docID, Integer position) {
 		this.docID = docID;
 		this.positions = new ArrayList<Integer>(position);
 		this.termFreq = positions.size();
-	}	
-	
-	private void incrementTermFreq(){
+	}
+
+	private void incrementTermFreq() {
 		termFreq++;
 	}
-	
-	public void addPosition(Integer position){
+
+	public void addPosition(Integer position) {
 		positions.add(position);
 		incrementTermFreq();
 	}
@@ -62,6 +62,19 @@ public class Posting implements Comparable<Posting> {
 			return 0;
 		}
 		return this.docID > arg0.docID ? 1 : -1;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("DocID: " + getDocID().toString() + "\n");
+		stringBuilder.append("Term Frequency: " + getTermFreq() + "\n");
+		stringBuilder.append("Positions:");
+		for (Integer posi : getPositions()) {
+			stringBuilder.append(" " + posi);
+		}
+		stringBuilder.append("\n");
+		return stringBuilder.toString();
 	}
 
 }
