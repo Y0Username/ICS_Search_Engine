@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.se.data.Posting;
-import com.se.data.WordEntry;
+import com.se.data.InvertedIndex;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 import com.se.util.MapPrinter;
@@ -24,7 +24,7 @@ public class Indexer {
 		Integer docID = 0;
 		for (File file : files) {
 			docID++;
-			Map<String, Posting> postingMap = Tokenizer.tokenize(file, docID);
+			Map<String, Posting> postingMap = Tokenizer.tokenize(file, docID, file.getAbsolutePath());
 
 			for (String term : postingMap.keySet()) {
 				List<Posting> postingList;
@@ -38,9 +38,9 @@ public class Indexer {
 			}
 		}
 
-		Set<WordEntry> wordEntries = new HashSet<WordEntry>();
+		Set<InvertedIndex> wordEntries = new HashSet<InvertedIndex>();
 		for (Entry<String, List<Posting>> entry : postingListMap.entrySet()) {
-			WordEntry wordEntry = new WordEntry();
+			InvertedIndex wordEntry = new InvertedIndex();
 			wordEntry.setPostings(entry.getValue());
 			wordEntry.setTerm(entry.getKey());
 			wordEntries.add(wordEntry);

@@ -19,18 +19,20 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
+import com.se.data.Document;
 import com.se.data.Posting;
-import com.se.data.WordEntry;
+import com.se.data.InvertedIndex;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
 public class IndexerMR {
 	private static final String PATH = "path";
+	private static final String BOOK_KEEPING_FILE = "bookkeeping.tsv";
+	private static Gson gson = new Gson();
+	private static DatabaseUtil db = new DatabaseUtil();
 
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
-
-		private static Gson gson = new Gson();
 
 		public void map(Object key, Text value, Context context)
 				throws IOException, InterruptedException {
@@ -41,13 +43,17 @@ public class IndexerMR {
 				return;
 			}
 			String filePath = itr.nextToken();
-			// String url = itr.nextToken();
+			String url = itr.nextToken();
 			String[] parts = filePath.split("/");
 			int docID = 500 * Integer.valueOf(parts[0])
 					+ Integer.valueOf(parts[1]);
 			File file = new File(path + filePath);
 
-			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID);
+			Document docEntry = new Document(docID, filePath, url);
+			db.insert(docEntry);
+
+			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID,
+					url);
 
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
 				context.write(new Text(entry.getKey()),
@@ -57,12 +63,10 @@ public class IndexerMR {
 	}
 
 	public static class PostingsReducer extends Reducer<Text, Text, Text, Text> {
-		private static DatabaseUtil db = new DatabaseUtil();
-		private static Gson gson = new Gson();
 
 		public void reduce(Text term, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			WordEntry wordEntry = new WordEntry();
+			InvertedIndex wordEntry = new InvertedIndex();
 			wordEntry.setTerm(term.toString());
 			List<Posting> postings = new ArrayList<Posting>();
 			for (Text value : values) {
@@ -80,7 +84,6 @@ public class IndexerMR {
 		Configuration conf = new Configuration();
 		String path = FileHandler.configFetch(PATH);
 		conf.set(PATH, path);
-		String fileName = "bookkeeping.tsv";
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(IndexerMR.class);
 		job.setMapperClass(TokenizerMapper.class);
@@ -88,8 +91,16 @@ public class IndexerMR {
 		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
-		FileInputFormat.addInputPath(job, new Path(path + fileName));
+		FileInputFormat.addInputPath(job, new Path(path + BOOK_KEEPING_FILE));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
 }
+
+// for (Element element : doc.getAllElements()) {
+// if (!set.contains(element.tagName())) {
+// tokenize(docID, element.ownText(), element.tagName(),
+// postingMap);
+// }
+// }
+// return postingMap;

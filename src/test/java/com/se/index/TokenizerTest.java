@@ -12,7 +12,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testTokenize() {
-		Map<String, Posting> postingListMap = Tokenizer.tokenize(new File("src/test/resources/4/214"), 1);
+		Map<String, Posting> postingListMap = Tokenizer.tokenize(new File("src/test/resources/4/214"), 1, "www.214.ics.edu");
 		for(Entry<String, Posting> entry : postingListMap.entrySet()){
 			System.out.println(entry.getKey());
 			System.out.println(entry.getValue());

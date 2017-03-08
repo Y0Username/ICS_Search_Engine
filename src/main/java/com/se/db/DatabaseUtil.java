@@ -10,7 +10,6 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
-import com.se.data.WordEntry;
 
 public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
@@ -28,16 +27,16 @@ public class DatabaseUtil {
 		datastore.ensureIndexes();
 	}
 
-	public void insert(Collection<WordEntry> wordEntries) {
-		datastore.save(wordEntries);
+	public void insert(Collection<Object> objects) {
+		datastore.save(objects);
 	}
 
-	public void insert(WordEntry wordEntry) {
+	public void insert(Object object) {
 		try {
-			datastore.save(wordEntry);
+			datastore.save(object);
 		} catch (BsonSerializationException exception) {
-			System.err.print("Error while inserting " + wordEntry.getTerm()
-					+ " " + wordEntry.getDocFrq() + " to MongoDB");
+			System.err.print("Error while inserting to MongoDB");
+			System.err.print(object);
 			System.err.println(exception);
 		}
 	}

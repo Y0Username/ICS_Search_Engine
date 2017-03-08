@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity
-public class WordEntry {
+public class InvertedIndex {
 	@Id
 	private String term;
 	
