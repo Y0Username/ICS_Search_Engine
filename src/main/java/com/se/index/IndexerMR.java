@@ -19,7 +19,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
-import com.se.data.Document;
+import com.se.data.Documents;
 import com.se.data.Posting;
 import com.se.data.InvertedIndex;
 import com.se.db.DatabaseUtil;
@@ -49,7 +49,7 @@ public class IndexerMR {
 					+ Integer.valueOf(parts[1]);
 			File file = new File(path + filePath);
 
-			Document docEntry = new Document(docID, filePath, url);
+			Documents docEntry = new Documents(docID, filePath, url);
 			db.insert(docEntry);
 
 			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID,
@@ -68,7 +68,7 @@ public class IndexerMR {
 				throws IOException, InterruptedException {
 			InvertedIndex wordEntry = new InvertedIndex();
 			wordEntry.setTerm(term.toString());
-			List<Posting> postings = new ArrayList<Posting>();
+			List<Posting> postings = new ArrayList<>();
 			for (Text value : values) {
 				postings.add(gson.fromJson(value.toString(), Posting.class));
 			}

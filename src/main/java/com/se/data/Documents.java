@@ -4,13 +4,13 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity
-public class Document {
+public class Documents {
 	@Id
 	private Integer docID;
 	private String filePath;
 	private String url;
 
-	public Document(Integer docID, String filePath, String url) {
+	public Documents(Integer docID, String filePath, String url) {
 		super();
 		this.docID = docID;
 		this.filePath = filePath;

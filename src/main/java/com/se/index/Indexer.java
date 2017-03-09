@@ -20,7 +20,7 @@ public class Indexer {
 
 	public void index() {
 		List<File> files = FileHandler.walker(location);
-		Map<String, List<Posting>> postingListMap = new HashMap<String, List<Posting>>();
+		Map<String, List<Posting>> postingListMap = new HashMap<>();
 		Integer docID = 0;
 		for (File file : files) {
 			docID++;
@@ -31,14 +31,14 @@ public class Indexer {
 				if (postingListMap.containsKey(term)) {
 					postingList = postingListMap.get(term);
 				} else {
-					postingList = new ArrayList<Posting>();
+					postingList = new ArrayList<>();
 				}
 				postingList.add(postingMap.get(term));
 				postingListMap.put(term, postingList);
 			}
 		}
 
-		Set<InvertedIndex> wordEntries = new HashSet<InvertedIndex>();
+		Set<InvertedIndex> wordEntries = new HashSet<>();
 		for (Entry<String, List<Posting>> entry : postingListMap.entrySet()) {
 			InvertedIndex wordEntry = new InvertedIndex();
 			wordEntry.setPostings(entry.getValue());

@@ -30,7 +30,7 @@ public class Tokenizer {
 		set.add("script");
 		set.add("document");
 		Document doc;
-		Map<String, Posting> postingMap = new HashMap<String, Posting>();
+		Map<String, Posting> postingMap = new HashMap<>();
 		try {
 			doc = Jsoup.parse(file, "UTF-8", url);
 			tokenize(docID, doc.text(), postingMap);
@@ -45,9 +45,10 @@ public class Tokenizer {
 			Map<String, Posting> postingMap) {
 		text = text.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
-		int wordPosition = 1;
+		int wordPosition = 0;
 		while (m.find()) {
 			String currentWord = m.group(0);
+			wordPosition++;
 			currentWord = stem(currentWord);
 			if (isStopWord(currentWord)) {
 				continue;
@@ -61,7 +62,6 @@ public class Tokenizer {
 				Posting newTerm = new Posting(docID, wordPosition);
 				postingMap.put(currentWord, newTerm);
 			}
-			wordPosition++;
 		}
 		return;
 	}
