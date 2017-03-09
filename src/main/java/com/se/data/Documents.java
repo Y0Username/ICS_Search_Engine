@@ -9,12 +9,14 @@ public class Documents {
 	private Integer docID;
 	private String filePath;
 	private String url;
+	private Integer docLen;
 
-	public Documents(Integer docID, String filePath, String url) {
+	public Documents(Integer docID, String filePath, String url, Integer docLen) {
 		super();
 		this.docID = docID;
 		this.filePath = filePath;
 		this.url = url;
+		this.docLen = docLen;
 	}
 
 	public Integer getDocID() {
@@ -40,5 +42,9 @@ public class Documents {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public Integer getDocLen() { return docLen; }
+
+	public void setDocLen(Integer docLen) { this.docLen = docLen; }
 
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.se.data.Posting;
 import com.se.data.InvertedIndex;
+import com.se.data.parsedDocument;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 import com.se.util.MapPrinter;
@@ -24,7 +25,8 @@ public class Indexer {
 		Integer docID = 0;
 		for (File file : files) {
 			docID++;
-			Map<String, Posting> postingMap = Tokenizer.tokenize(file, docID, file.getAbsolutePath());
+			parsedDocument pDoc = Tokenizer.tokenize(file, docID, file.getAbsolutePath());
+			Map<String, Posting> postingMap = pDoc.getPostingMap();
 
 			for (String term : postingMap.keySet()) {
 				List<Posting> postingList;
