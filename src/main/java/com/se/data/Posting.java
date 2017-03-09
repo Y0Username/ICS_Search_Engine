@@ -20,8 +20,9 @@ public class Posting implements Comparable<Posting> {
 
 	public Posting(Integer docID, Integer position) {
 		this.docID = docID;
-		this.positions = new ArrayList<Integer>(position);
-		this.termFreq = positions.size();
+		this.positions = new ArrayList<Integer>();
+		this.positions.add(position);
+		this.termFreq = 1;
 	}
 
 	private void incrementTermFreq() {

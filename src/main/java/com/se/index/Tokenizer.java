@@ -49,10 +49,8 @@ public class Tokenizer {
 		while (m.find()) {
 			String currentWord = m.group(0);
 			wordPosition++;
+			if (isStopWord(currentWord)) { continue; }
 			currentWord = stem(currentWord);
-			if (isStopWord(currentWord)) {
-				continue;
-			}
 
 			if (postingMap.containsKey(currentWord)) {
 				Posting seenTerm = postingMap.get(currentWord);
