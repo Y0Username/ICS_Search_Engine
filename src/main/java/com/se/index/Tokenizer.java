@@ -33,7 +33,7 @@ public class Tokenizer {
 		Map<String, Posting> postingMap = new HashMap<String, Posting>();
 		try {
 			doc = Jsoup.parse(file, "UTF-8", url);
-			tokenize(docID, doc.text(), postingMap);
+			tokenize(docID, doc.body().text(), postingMap);
 		} catch (IOException | NullPointerException | IllegalArgumentException e) {
 			System.err.println(file);
 			System.err.println("Error while parsing. " + e);

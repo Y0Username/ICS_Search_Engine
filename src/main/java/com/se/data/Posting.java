@@ -11,13 +11,21 @@ public class Posting implements Comparable<Posting> {
 	private Integer docID;
 	private Integer termFreq;
 	private List<Integer> positions;
-
+	private Double tfidf;
+	
 	public Posting(Integer docID, List<Integer> positions) {
 		this.docID = docID;
 		this.positions = positions;
 		this.termFreq = positions.size();
 	}
 
+	public Double getTfidf() {
+		return tfidf;
+	}
+	
+	public void setTfidf(Double tfidf) {
+		this.tfidf = tfidf;
+	}
 	public Posting(Integer docID, Integer position) {
 		this.docID = docID;
 		this.positions = new ArrayList<Integer>(position);

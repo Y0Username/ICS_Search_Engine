@@ -20,17 +20,19 @@ import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
 import com.se.data.Document;
-import com.se.data.Posting;
 import com.se.data.InvertedIndex;
+import com.se.data.Posting;
+import com.se.data.Utility;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
 public class IndexerMR {
 	private static final String PATH = "path";
-	private static final String BOOK_KEEPING_FILE = "bookkeeping.tsv";
+	private static final String BOOK_KEEPING_FILE = "bookkeeping1.tsv";
 	private static Gson gson = new Gson();
 	private static DatabaseUtil db = new DatabaseUtil();
-
+	private static Utility utility = new Utility();
+	private static Long N = 40000l;
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
@@ -59,6 +61,7 @@ public class IndexerMR {
 				context.write(new Text(entry.getKey()),
 						new Text(gson.toJson(entry.getValue())));
 			}
+			utility.incrementValue();
 		}
 	}
 
@@ -75,6 +78,12 @@ public class IndexerMR {
 			Collections.sort(postings);
 			wordEntry.setPostings(postings);
 			wordEntry.setDocFrq(postings.size());
+			
+			for(Posting posting: postings){
+				Double tfidf = (1 + Math.log10(posting.getTermFreq())) * Math.log10(N.doubleValue()/postings.size());
+				posting.setTfidf(tfidf);
+			}
+			
 			db.insert(wordEntry);
 		}
 	}
@@ -92,7 +101,8 @@ public class IndexerMR {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(path + BOOK_KEEPING_FILE));
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		job.waitForCompletion(true);
+		db.insert(utility);
 	}
 
 }
