@@ -28,7 +28,7 @@ import com.se.file.FileHandler;
 
 public class IndexerMR {
 	private static final String PATH = "path";
-	private static final String BOOK_KEEPING_FILE = "bookkeeping.tsv";
+	private static final String BOOK_KEEPING_FILE = "bookkeeping";
 	private static Gson gson = new Gson();
 	private static DatabaseUtil db = new DatabaseUtil();
 
@@ -85,6 +85,7 @@ public class IndexerMR {
 			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
 		String path = FileHandler.configFetch(PATH);
+		String book = FileHandler.configFetch(BOOK_KEEPING_FILE);
 		conf.set(PATH, path);
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(IndexerMR.class);
@@ -93,7 +94,7 @@ public class IndexerMR {
 		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
-		FileInputFormat.addInputPath(job, new Path(path + BOOK_KEEPING_FILE));
+		FileInputFormat.addInputPath(job, new Path(path + book));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
