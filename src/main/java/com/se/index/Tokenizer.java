@@ -36,7 +36,7 @@ public class Tokenizer {
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
 		try {
 			doc = Jsoup.parse(file, "UTF-8", url);
-			dLen = tokenize(docID, doc.text(), postingMap);
+			dLen = tokenize(docID, doc.body().text(), postingMap);
 		} catch (IOException | NullPointerException | IllegalArgumentException e) {
 			System.err.println(file);
 			System.err.println("Error while parsing. " + e);
