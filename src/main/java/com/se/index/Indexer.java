@@ -56,4 +56,5 @@ public class Indexer {
 		Indexer indexer = new Indexer();
 		indexer.index();
 	}
+
 }

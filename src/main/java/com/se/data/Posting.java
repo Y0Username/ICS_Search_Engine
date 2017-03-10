@@ -19,16 +19,13 @@ public class Posting implements Comparable<Posting> {
 		this.termFreq = positions.size();
 	}
 
-	public Double getTfidf() {
-		return tfidf;
-	}
+	public Double getTfidf() { return tfidf; }
 	
-	public void setTfidf(Double tfidf) {
-		this.tfidf = tfidf;
-	}
+	public void setTfidf(Double tfidf) { this.tfidf = tfidf; }
+
 	public Posting(Integer docID, Integer position) {
 		this.docID = docID;
-		this.positions = new ArrayList<Integer>();
+		this.positions = new ArrayList<>();
 		this.positions.add(position);
 		this.termFreq = 1;
 	}
