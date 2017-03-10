@@ -9,7 +9,6 @@ import org.mongodb.morphia.annotations.Id;
 public class InvertedIndex {
 	@Id
 	private String term;
-	
 	private List<Posting> postings;
 	private int docFrq;
 

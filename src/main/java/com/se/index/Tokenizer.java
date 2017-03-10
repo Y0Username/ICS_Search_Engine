@@ -20,10 +20,11 @@ import org.tartarus.snowball.ext.englishStemmer;
 import weka.core.Stopwords;
 
 import com.se.data.Posting;
+import com.se.data.parsedDocument;
 
 public class Tokenizer {
 
-	public static Map<String, Posting> tokenize(File file, Integer docID,
+	public static parsedDocument tokenize(File file, Integer docID,
 			String url) {
 		HashSet<String> set = new HashSet<>();
 		set.add("style");
@@ -31,21 +32,25 @@ public class Tokenizer {
 		set.add("document");
 		Document doc;
 		Map<String, Posting> postingMap = new HashMap<>();
+		Integer dLen=0;
+		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
 		try {
 			doc = Jsoup.parse(file, "UTF-8", url);
-			tokenize(docID, doc.body().text(), postingMap);
+			dLen = tokenize(docID, doc.text(), postingMap);
 		} catch (IOException | NullPointerException | IllegalArgumentException e) {
 			System.err.println(file);
 			System.err.println("Error while parsing. " + e);
 		}
-		return postingMap;
+		pDoc.setDocLength(dLen);
+		pDoc.setPostingMap(postingMap);
+		return pDoc;
 	}
 
-	private static void tokenize(Integer docID, String text,
+	private static Integer tokenize(Integer docID, String text,
 			Map<String, Posting> postingMap) {
 		text = text.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
-		int wordPosition = 0;
+		Integer wordPosition = 0;
 		while (m.find()) {
 			String currentWord = m.group(0);
 			wordPosition++;
@@ -61,7 +66,7 @@ public class Tokenizer {
 				postingMap.put(currentWord, newTerm);
 			}
 		}
-		return;
+		return wordPosition;
 	}
 
 	private static String stem(String currentWord) {

@@ -23,6 +23,7 @@ import com.se.data.Documents;
 import com.se.data.Posting;
 import com.se.data.InvertedIndex;
 import com.se.data.Utility;
+import com.se.data.parsedDocument;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
@@ -51,11 +52,12 @@ public class IndexerMR {
 					+ Integer.valueOf(parts[1]);
 			File file = new File(path + filePath);
 
-			Documents docEntry = new Documents(docID, filePath, url);
-			db.insert(docEntry);
+			parsedDocument pDoc = Tokenizer.tokenize(file, docID, url);
+			Map<String, Posting> postingsMap = pDoc.getPostingMap();
+			Integer docLen = pDoc.getDocLength();
 
-			Map<String, Posting> postingsMap = Tokenizer.tokenize(file, docID,
-					url);
+			Documents docEntry = new Documents(docID, filePath, url, docLen);
+			db.insert(docEntry);
 
 			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
 				context.write(new Text(entry.getKey()),
