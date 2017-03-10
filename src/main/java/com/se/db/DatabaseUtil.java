@@ -40,4 +40,5 @@ public class DatabaseUtil {
 			System.err.println(exception);
 		}
 	}
+
 }
