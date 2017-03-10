@@ -29,4 +29,5 @@ public class parsedDocument {
     public void setPostingMap(Map<String, Posting> postingMap) {
         this.postingMap = postingMap;
     }
+
 }
