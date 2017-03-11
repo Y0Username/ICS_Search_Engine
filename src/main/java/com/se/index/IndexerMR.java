@@ -33,7 +33,7 @@ public class IndexerMR {
 	private static Gson gson = new Gson();
 	private static DatabaseUtil db = new DatabaseUtil();
 	private static Utility utility = new Utility();
-	private static Long N = 40000l;
+	private static Long N = 37419l;
 
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
@@ -69,6 +69,7 @@ public class IndexerMR {
 			} catch (IOException | IllegalArgumentException e) {
 				System.err.println(file);
 				System.err.println("Error while parsing. " + e);
+				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
