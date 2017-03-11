@@ -27,20 +27,15 @@ import com.se.data.parsedDocument;
 
 public class Tokenizer {
 
-	public static parsedDocument tokenize(File file, Integer docID, String url) {
+	public static parsedDocument tokenize(File file, Integer docID, String url) throws IOException {
 		Map<String, Posting> postingMap = new HashMap<>();
 		Integer dLen = 0;
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
-		try {
-			Document document = Jsoup.parse(file, "UTF-8", url);
-			List<String> tokens = tokenize(document.text());
-			dLen = tokens.size();
-			postingMap = createPostings(tokens, docID);
-			extractTags(postingMap, document);
-		} catch (IOException | NullPointerException | IllegalArgumentException e) {
-			System.err.println(file);
-			System.err.println("Error while parsing. " + e);
-		}
+		Document document = Jsoup.parse(file, "UTF-8", url);
+		List<String> tokens = tokenize(document.text());
+		dLen = tokens.size();
+		postingMap = createPostings(tokens, docID);
+		extractTags(postingMap, document);
 		pDoc.setDocLength(dLen);
 		pDoc.setPostingMap(postingMap);
 		return pDoc;

@@ -1,6 +1,7 @@
 package com.se.index;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import com.se.util.MapPrinter;
 public class Indexer {
 	private static final String location = FileHandler.configFetch("path");
 
-	public void index() {
+	public void index() throws IOException {
 		List<File> files = FileHandler.walker(location);
 		Map<String, List<Posting>> postingListMap = new HashMap<>();
 		Integer docID = 0;
@@ -54,7 +55,7 @@ public class Indexer {
 		MapPrinter.print(postingListMap);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Indexer indexer = new Indexer();
 		indexer.index();
 	}

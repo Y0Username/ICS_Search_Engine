@@ -34,11 +34,11 @@ public class IndexerMR {
 	private static DatabaseUtil db = new DatabaseUtil();
 	private static Utility utility = new Utility();
 	private static Long N = 40000l;
+
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
 
-		public void map(Object key, Text value, Context context)
-				throws IOException, InterruptedException {
+		public void map(Object key, Text value, Context context) {
 			Configuration conf = context.getConfiguration();
 			String path = conf.get(PATH);
 			StringTokenizer itr = new StringTokenizer(value.toString());
@@ -52,18 +52,26 @@ public class IndexerMR {
 					+ Integer.valueOf(parts[1]);
 			File file = new File(path + filePath);
 
-			parsedDocument pDoc = Tokenizer.tokenize(file, docID, url);
-			Map<String, Posting> postingsMap = pDoc.getPostingMap();
-			Integer docLen = pDoc.getDocLength();
+			parsedDocument pDoc;
+			try {
+				pDoc = Tokenizer.tokenize(file, docID, url);
+				Map<String, Posting> postingsMap = pDoc.getPostingMap();
+				Integer docLen = pDoc.getDocLength();
 
-			Documents docEntry = new Documents(docID, filePath, url, docLen);
-			db.insert(docEntry);
+				Documents docEntry = new Documents(docID, filePath, url, docLen);
+				db.insert(docEntry);
 
-			for (Entry<String, Posting> entry : postingsMap.entrySet()) {
-				context.write(new Text(entry.getKey()),
-						new Text(gson.toJson(entry.getValue())));
+				for (Entry<String, Posting> entry : postingsMap.entrySet()) {
+					context.write(new Text(entry.getKey()),
+							new Text(gson.toJson(entry.getValue())));
+				}
+				utility.incrementValue();
+			} catch (IOException | IllegalArgumentException e) {
+				System.err.println(file);
+				System.err.println("Error while parsing. " + e);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			utility.incrementValue();
 		}
 	}
 
@@ -80,12 +88,13 @@ public class IndexerMR {
 			Collections.sort(postings);
 			wordEntry.setPostings(postings);
 			wordEntry.setDocFrq(postings.size());
-			
-			for(Posting posting: postings){
-				Double tfidf = (1 + Math.log10(posting.getTermFreq())) * Math.log10(N.doubleValue()/postings.size());
+
+			for (Posting posting : postings) {
+				Double tfidf = (1 + Math.log10(posting.getTermFreq()))
+						* Math.log10(N.doubleValue() / postings.size());
 				posting.setTfidf(tfidf);
 			}
-			
+
 			db.insert(wordEntry);
 		}
 	}
