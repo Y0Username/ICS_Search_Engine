@@ -41,7 +41,7 @@ public class Tokenizer {
 		return pDoc;
 	}
 
-	private static List<String> tokenize(String text) {
+	public static List<String> tokenize(String text) {
 		List<String> strings = new ArrayList<>();
 		text = text.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);

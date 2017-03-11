@@ -1,5 +1,8 @@
 package com.se.index;
 
+import static com.se.index.TfIdf.inverseDocFrequency;
+import static com.se.index.TfIdf.termFrequency;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +36,6 @@ public class IndexerMR {
 	private static Gson gson = new Gson();
 	private static DatabaseUtil db = new DatabaseUtil();
 	private static Utility utility = new Utility();
-	private static Long N = 37419l;
 
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
@@ -90,8 +92,8 @@ public class IndexerMR {
 			wordEntry.setDocFrq(postings.size());
 
 			for (Posting posting : postings) {
-				Double tfidf = (1 + Math.log10(posting.getTermFreq()))
-						* Math.log10(N.doubleValue() / postings.size());
+				Double tfidf = termFrequency(posting.getTermFreq())
+						* inverseDocFrequency(postings.size());
 				posting.setTfidf(tfidf);
 			}
 
