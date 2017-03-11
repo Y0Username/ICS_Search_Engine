@@ -6,32 +6,22 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>myservlet</display-name>
-    <servlet-name>myservlet</servlet-name>
-    <servlet-class>com.se.servlets.myservlet</servlet-class>
+    <display-name>SearchServlet</display-name>
+    <servlet-name>SearchServlet</servlet-name>
+    <servlet-class>com.se.servlets.SearchServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>myservlet</servlet-name>
-    <url-pattern>/myservlet</url-pattern>
+    <servlet-name>SearchServlet</servlet-name>
+    <url-pattern>/index</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>Test</display-name>
-    <servlet-name>Test</servlet-name>
-    <servlet-class>Test</servlet-class>
+    <display-name>ResultsServlet</display-name>
+    <servlet-name>ResultsServlet</servlet-name>
+    <servlet-class>com.se.servlets.ResultsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Test</servlet-name>
-    <url-pattern>/Test</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>secondservlet</display-name>
-    <servlet-name>secondservlet</servlet-name>
-    <servlet-class>com.se.servlets.secondservlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>secondservlet</servlet-name>
-    <url-pattern>/secondservlet</url-pattern>
+    <servlet-name>ResultsServlet</servlet-name>
+    <url-pattern>/results</url-pattern>
   </servlet-mapping>
 </web-app>

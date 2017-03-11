@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div>
-		<form action="myservlet" method="post">
+		<form action="results" method="post">
 			<input type="text" name="search" class="search"><br> 
 			<input type="submit" value="search" class="button">
 	</div>
