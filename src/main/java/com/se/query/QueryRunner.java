@@ -16,7 +16,7 @@ import com.se.index.Tokenizer;
 public class QueryRunner {
 	private DatabaseUtil databaseUtil = new DatabaseUtil();
 
-	public void search(String query) {
+	public List<SearchResult> search(String query) {
 		Map<Integer, SearchResult> searchResults = new HashMap<>();
 		for (String term : Tokenizer.tokenize(query)) {
 			InvertedIndex invertedIndex = databaseUtil
@@ -40,11 +40,11 @@ public class QueryRunner {
 		List<SearchResult> results = new ArrayList<SearchResult>(
 				searchResults.values());
 		Collections.sort(results);
-		System.out.println(results);
+		return results;
 	}
 
 	public static void main(String[] args) {
 		QueryRunner queryRunner = new QueryRunner();
-		queryRunner.search("alexander ihler");
+		System.out.println(queryRunner.search("alexander ihler"));
 	}
 }

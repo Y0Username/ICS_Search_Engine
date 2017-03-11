@@ -1,10 +1,16 @@
 package com.se.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.se.data.SearchResult;
+import com.se.query.QueryRunner;
 
 /**
  * Servlet implementation class secondservlet
@@ -17,7 +23,6 @@ public class ResultsServlet extends HttpServlet {
 	 */
 	public ResultsServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -26,7 +31,6 @@ public class ResultsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ")
 				.append(request.getContextPath());
 	}
@@ -37,8 +41,20 @@ public class ResultsServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		PrintWriter out = response.getWriter();
+
+		String name = request.getParameter("search");
+
+		QueryRunner queryRunner = new QueryRunner();
+		List<SearchResult> searchResults = queryRunner.search(name);
+
+		out.print("Results for search query: " + name);
+		out.print("\n");
+		for (SearchResult searchResult : searchResults) {
+			out.print(searchResult);
+			out.print("\n");
+		}
+		out.close();
 	}
 
 }
