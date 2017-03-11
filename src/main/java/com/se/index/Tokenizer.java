@@ -33,7 +33,7 @@ public class Tokenizer {
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
 		try {
 			Document document = Jsoup.parse(file, "UTF-8", url);
-			List<String> tokens = tokenize(document.body().text());
+			List<String> tokens = tokenize(document.text());
 			dLen = tokens.size();
 			postingMap = createPostings(tokens, docID);
 			extractTags(postingMap, document);
@@ -92,8 +92,11 @@ public class Tokenizer {
 		for (Element element : doc.getAllElements()) {
 			List<String> tokens = tokenize(element.ownText());
 			String tag = element.tagName();
-			for(String token: tokens){
+			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
+				if (posting == null) {
+					continue;
+				}
 				posting.addTag(tag);
 			}
 		}
