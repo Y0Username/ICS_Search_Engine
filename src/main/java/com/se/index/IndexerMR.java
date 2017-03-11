@@ -20,8 +20,8 @@ import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
 import com.se.data.Documents;
-import com.se.data.Posting;
 import com.se.data.InvertedIndex;
+import com.se.data.Posting;
 import com.se.data.Utility;
 import com.se.data.parsedDocument;
 import com.se.db.DatabaseUtil;

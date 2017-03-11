@@ -1,7 +1,9 @@
 package com.se.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Yathish on 3/2/17.
@@ -12,23 +14,39 @@ public class Posting implements Comparable<Posting> {
 	private Integer termFreq;
 	private List<Integer> positions;
 	private Double tfidf;
-	
+	private Set<String> tags;
+
 	public Posting(Integer docID, List<Integer> positions) {
 		this.docID = docID;
 		this.positions = positions;
 		this.termFreq = positions.size();
+		this.tags = new HashSet<String>();
 	}
-
-	public Double getTfidf() { return tfidf; }
-	
-	public void setTfidf(Double tfidf) { this.tfidf = tfidf; }
 
 	public Posting(Integer docID, Integer position) {
 		this.docID = docID;
 		this.positions = new ArrayList<>();
 		this.positions.add(position);
 		this.termFreq = 1;
+		this.tags = new HashSet<String>();
 	}
+	
+	public Set<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<String> tags) {
+		this.tags = tags;
+	}
+	
+	public void addTag(String tag){
+		tags.add(tag);
+	}
+	
+	public Double getTfidf() { return tfidf; }
+	
+	public void setTfidf(Double tfidf) { this.tfidf = tfidf; }
+
 
 	private void incrementTermFreq() {
 		termFreq++;
