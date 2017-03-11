@@ -52,7 +52,6 @@ public class DatabaseUtil {
 			datastore.save(object);
 		} catch (BsonSerializationException exception) {
 			System.err.print("Error while inserting to MongoDB");
-			System.err.print(object);
 			System.err.println(exception);
 		}
 	}
