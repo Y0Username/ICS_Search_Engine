@@ -6,8 +6,11 @@ package com.se.index;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,19 +27,20 @@ import com.se.data.parsedDocument;
 
 public class Tokenizer {
 
-	public static parsedDocument tokenize(File file, Integer docID,
-			String url) {
+	public static parsedDocument tokenize(File file, Integer docID, String url) {
 		HashSet<String> set = new HashSet<>();
 		set.add("style");
 		set.add("script");
 		set.add("document");
 		Document doc;
 		Map<String, Posting> postingMap = new HashMap<>();
-		Integer dLen=0;
+		Integer dLen = 0;
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
 		try {
 			doc = Jsoup.parse(file, "UTF-8", url);
-			dLen = tokenize(docID, doc.body().text(), postingMap);
+			List<String> tokens = tokenize(doc.body().text());
+			dLen = tokens.size();
+			postingMap = createPostings(tokens, docID);
 		} catch (IOException | NullPointerException | IllegalArgumentException e) {
 			System.err.println(file);
 			System.err.println("Error while parsing. " + e);
@@ -46,27 +50,38 @@ public class Tokenizer {
 		return pDoc;
 	}
 
-	private static Integer tokenize(Integer docID, String text,
-			Map<String, Posting> postingMap) {
+	private static List<String> tokenize(String text) {
+		List<String> strings = new ArrayList<>();
 		text = text.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
 		Integer wordPosition = 0;
 		while (m.find()) {
 			String currentWord = m.group(0);
 			wordPosition++;
-			if (isStopWord(currentWord)) { continue; }
+			if (isStopWord(currentWord)) {
+				continue;
+			}
 			currentWord = stem(currentWord);
+			strings.add(currentWord);
+		}
+		return strings;
+	}
 
-			if (postingMap.containsKey(currentWord)) {
-				Posting seenTerm = postingMap.get(currentWord);
+	private static Map<String, Posting> createPostings(
+			Collection<String> tokens, Integer docID) {
+		Map<String, Posting> postingMap = new HashMap<>();
+		Integer wordPosition = 0;
+		for (String token : tokens) {
+			if (postingMap.containsKey(token)) {
+				Posting seenTerm = postingMap.get(token);
 				seenTerm.addPosition(wordPosition);
-				postingMap.put(currentWord, seenTerm);
 			} else {
 				Posting newTerm = new Posting(docID, wordPosition);
-				postingMap.put(currentWord, newTerm);
+				postingMap.put(token, newTerm);
 			}
+			wordPosition++;
 		}
-		return wordPosition;
+		return postingMap;
 	}
 
 	private static String stem(String currentWord) {
