@@ -69,7 +69,6 @@ public class IndexerMR {
 			} catch (IOException | IllegalArgumentException e) {
 				System.err.println(file);
 				System.err.println("Error while parsing. " + e);
-				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
