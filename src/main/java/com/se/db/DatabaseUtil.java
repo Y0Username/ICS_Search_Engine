@@ -4,12 +4,16 @@ package com.se.db;
  * Created by Yathish on 3/2/17.
  */
 import java.util.Collection;
+import java.util.List;
 
 import org.bson.BsonSerializationException;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
 
 import com.mongodb.MongoClient;
+import com.se.data.Document;
+import com.se.data.InvertedIndex;
 
 public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
@@ -31,6 +35,18 @@ public class DatabaseUtil {
 		datastore.save(objects);
 	}
 
+	public <T> T searchById(Class<T> cls, Object term) {
+		return datastore.get(cls, term);
+	}
+
+	public InvertedIndex searchInvertedIndex(String term) {
+		return searchById(InvertedIndex.class, term);
+	}
+
+	public Document searchDocument(Integer docID) {
+		return searchById(Document.class, docID);
+	}
+
 	public void insert(Object object) {
 		try {
 			datastore.save(object);
@@ -40,5 +56,12 @@ public class DatabaseUtil {
 			System.err.println(exception);
 		}
 	}
+
+	public <T> List<T> search(Class<T> tClass, String key, Object value) {
+		Query<T> query = datastore.createQuery(tClass);
+		query.field(key).equals(value);
+		return query.asList();
+	}
+	
 
 }

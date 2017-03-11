@@ -15,6 +15,10 @@ public class Posting implements Comparable<Posting> {
 	private List<Integer> positions;
 	private Double tfidf;
 	private Set<String> tags;
+	
+	public Posting() {
+		
+	}
 
 	public Posting(Integer docID, List<Integer> positions) {
 		this.docID = docID;
@@ -90,15 +94,9 @@ public class Posting implements Comparable<Posting> {
 
 	@Override
 	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("DocID: " + getDocID().toString() + "\n");
-		stringBuilder.append("Term Frequency: " + getTermFreq() + "\n");
-		stringBuilder.append("Positions:");
-		for (Integer posi : getPositions()) {
-			stringBuilder.append(" " + posi);
-		}
-		stringBuilder.append("\n");
-		return stringBuilder.toString();
+		return "Posting [docID=" + docID + ", termFreq=" + termFreq
+				+ ", positions=" + positions + ", tfidf=" + tfidf + ", tags="
+				+ tags + "]";
 	}
 
 }

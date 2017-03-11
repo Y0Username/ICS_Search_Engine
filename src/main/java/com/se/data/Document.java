@@ -3,15 +3,19 @@ package com.se.data;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity
-public class Documents {
+@Entity("Documents")
+public class Document {
 	@Id
 	private Integer docID;
 	private String filePath;
 	private String url;
 	private Integer docLen;
+	
+	public Document() {
+		
+	}
 
-	public Documents(Integer docID, String filePath, String url, Integer docLen) {
+	public Document(Integer docID, String filePath, String url, Integer docLen) {
 		super();
 		this.docID = docID;
 		this.filePath = filePath;
@@ -46,5 +50,11 @@ public class Documents {
 	public Integer getDocLen() { return docLen; }
 
 	public void setDocLen(Integer docLen) { this.docLen = docLen; }
+
+	@Override
+	public String toString() {
+		return "Document [docID=" + docID + ", filePath=" + filePath
+				+ ", url=" + url + ", docLen=" + docLen + "]";
+	}
 
 }

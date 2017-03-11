@@ -5,7 +5,7 @@ import java.util.List;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity
+@Entity("InvertedIndex")
 public class InvertedIndex {
 	@Id
 	private String term;
@@ -34,6 +34,12 @@ public class InvertedIndex {
 
 	public void setDocFrq(int docFrq) {
 		this.docFrq = docFrq;
+	}
+
+	@Override
+	public String toString() {
+		return "InvertedIndex [term=" + term + ", postings=" + postings
+				+ ", docFrq=" + docFrq + "]";
 	}
 
 }

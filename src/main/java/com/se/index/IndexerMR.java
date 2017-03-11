@@ -19,7 +19,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
-import com.se.data.Documents;
+import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.Posting;
 import com.se.data.Utility;
@@ -58,7 +58,7 @@ public class IndexerMR {
 				Map<String, Posting> postingsMap = pDoc.getPostingMap();
 				Integer docLen = pDoc.getDocLength();
 
-				Documents docEntry = new Documents(docID, filePath, url, docLen);
+				Document docEntry = new Document(docID, filePath, url, docLen);
 				db.insert(docEntry);
 
 				for (Entry<String, Posting> entry : postingsMap.entrySet()) {
