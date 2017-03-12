@@ -16,11 +16,14 @@ import com.se.index.Tokenizer;
 public class QueryRunner {
 	private DatabaseUtil databaseUtil = new DatabaseUtil();
 
-	public void search(String query) {
+	public List<SearchResult> search(String query) {
 		Map<Integer, SearchResult> searchResults = new HashMap<>();
 		for (String term : Tokenizer.tokenize(query)) {
 			InvertedIndex invertedIndex = databaseUtil
 					.searchInvertedIndex(term);
+			if (invertedIndex == null) {
+				continue;
+			}
 			List<Posting> postings = invertedIndex.getPostings();
 			for (Posting posting : postings) {
 				Integer docId = posting.getDocID();
@@ -40,11 +43,19 @@ public class QueryRunner {
 		List<SearchResult> results = new ArrayList<SearchResult>(
 				searchResults.values());
 		Collections.sort(results);
-		System.out.println(results);
+		return results;
 	}
 
 	public static void main(String[] args) {
+		final int NUMBER_OF_SEARCH_RESULTS = 20;
 		QueryRunner queryRunner = new QueryRunner();
-		queryRunner.search("alexander ihler");
+		int i = 0;
+		for (SearchResult result : queryRunner.search("software engineering")) {
+			System.out.println(result);
+			i++;
+			if (i == NUMBER_OF_SEARCH_RESULTS) {
+				break;
+			}
+		}
 	}
 }

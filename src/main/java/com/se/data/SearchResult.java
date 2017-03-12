@@ -18,10 +18,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
 	@Override
 	public int compareTo(SearchResult arg0) {
-		if (this.score == arg0.score) {
-			return 0;
-		}
-		return arg0.score > this.score ? 1 : -1;
+		return Double.compare(arg0.score, this.score);
 	}
 
 	public Document getDocument() {
