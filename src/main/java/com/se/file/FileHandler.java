@@ -50,7 +50,7 @@ public class FileHandler {
 
 	public static String fetch(int fromWord, int toWord, String filePath,
 			String url) {
-		String path = "/media/magic/Windows 7/Users/Vivek/Google Drive/Quarter 2/IR/Project/webpages_raw/";
+		String path = configFetch("path");
 		StringBuilder stringBuilder = new StringBuilder();
 		try {
 			Document document = Jsoup.parse(new File(path + filePath), "UTF-8",
