@@ -32,7 +32,7 @@ public class Tokenizer {
 		Integer dLen = 0;
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
 		Document document = Jsoup.parse(file, "UTF-8", url);
-		List<String> tokens = tokenize(document.text());
+		List<String> tokens = tokenize(document.text().toLowerCase());
 		dLen = tokens.size();
 		postingMap = createPostings(tokens, docID);
 		extractTags(postingMap, document);
@@ -43,12 +43,9 @@ public class Tokenizer {
 
 	public static List<String> tokenize(String text) {
 		List<String> strings = new ArrayList<>();
-		text = text.toLowerCase();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
-		Integer wordPosition = 0;
 		while (m.find()) {
 			String currentWord = m.group(0);
-			wordPosition++;
 			if (isStopWord(currentWord)) {
 				continue;
 			}
@@ -97,7 +94,7 @@ public class Tokenizer {
 		}
 	}
 
-	private static boolean isStopWord(String currentWord) {
+	public static boolean isStopWord(String currentWord) {
 		if (currentWord.length() < 3) {
 			return true;
 		}

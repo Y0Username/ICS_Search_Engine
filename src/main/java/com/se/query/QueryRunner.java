@@ -11,6 +11,7 @@ import com.se.data.InvertedIndex;
 import com.se.data.Posting;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
+import com.se.file.FileHandler;
 import com.se.index.Tokenizer;
 
 public class QueryRunner {
@@ -28,22 +29,51 @@ public class QueryRunner {
 			for (Posting posting : postings) {
 				Integer docId = posting.getDocID();
 				Double tfIdf = posting.getTfidf();
+				SearchResult searchResult;
 				if (searchResults.containsKey(docId)) {
-					searchResults.get(docId).addScore(tfIdf);
+					searchResult = searchResults.get(docId);
 				} else {
-					SearchResult searchResult = new SearchResult();
+					searchResult = new SearchResult();
 					Document document = databaseUtil.searchDocument(docId);
 					searchResult.setDocument(document);
-					searchResult.setScore(tfIdf);
 					searchResults.put(docId, searchResult);
 				}
+				searchResult.addScore(tfIdf);
+				searchResult.addPositions(posting.getPositions());
 			}
 		}
 
 		List<SearchResult> results = new ArrayList<SearchResult>(
 				searchResults.values());
 		Collections.sort(results);
+
 		return results;
+	}
+
+	private static void generateSnippet(SearchResult result) {
+		Document document = result.getDocument();
+		SnippetRange range = Snippet.findRange(result.getPositions());
+		int MIN_WORDS_IN_SNIPPET = 25;
+		int MAX_WORDS_IN_SNIPPET = 40;
+		int fromIndex = range.getFromIndex();
+		int toIndex = range.getToIndex();
+		int numberOfWords = toIndex - fromIndex;
+		if(numberOfWords < MIN_WORDS_IN_SNIPPET ){
+			int add = (MIN_WORDS_IN_SNIPPET - numberOfWords)/2;
+			fromIndex = fromIndex - add;
+			if (fromIndex < 0) {
+				toIndex -= fromIndex;
+				fromIndex = 0;
+			}
+			toIndex = toIndex + add;					
+		}
+		if(numberOfWords > MAX_WORDS_IN_SNIPPET){
+			toIndex = fromIndex + MAX_WORDS_IN_SNIPPET;
+		}
+		
+		String snippet = FileHandler.fetch(fromIndex,
+				toIndex, document.getfilePath(), document.getUrl());
+		result.setSnippet(snippet);
 	}
 
 	public static void main(String[] args) {
@@ -51,6 +81,7 @@ public class QueryRunner {
 		QueryRunner queryRunner = new QueryRunner();
 		int i = 0;
 		for (SearchResult result : queryRunner.search("crista lopes")) {
+			generateSnippet(result);
 			System.out.println(result);
 			i++;
 			if (i == NUMBER_OF_SEARCH_RESULTS) {
