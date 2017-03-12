@@ -21,6 +21,9 @@ public class QueryRunner {
 		for (String term : Tokenizer.tokenize(query)) {
 			InvertedIndex invertedIndex = databaseUtil
 					.searchInvertedIndex(term);
+			if (invertedIndex == null) {
+				continue;
+			}
 			List<Posting> postings = invertedIndex.getPostings();
 			for (Posting posting : postings) {
 				Integer docId = posting.getDocID();
@@ -44,7 +47,15 @@ public class QueryRunner {
 	}
 
 	public static void main(String[] args) {
+		final int NUMBER_OF_SEARCH_RESULTS = 20;
 		QueryRunner queryRunner = new QueryRunner();
-		System.out.println(queryRunner.search("alexander ihler"));
+		int i = 0;
+		for (SearchResult result : queryRunner.search("software engineering")) {
+			System.out.println(result);
+			i++;
+			if (i == NUMBER_OF_SEARCH_RESULTS) {
+				break;
+			}
+		}
 	}
 }
