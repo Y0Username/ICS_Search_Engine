@@ -20,6 +20,18 @@
     <servlet-name>ResultsServlet</servlet-name>
     <servlet-class>com.se.servlets.ResultsServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SearchResult</display-name>
+    <servlet-name>SearchResult</servlet-name>
+    <servlet-class>com.se.data.SearchResult</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>Document</display-name>
+    <servlet-name>Document</servlet-name>
+    <servlet-class>com.se.data.Document</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ResultsServlet</servlet-name>
     <url-pattern>/results</url-pattern>

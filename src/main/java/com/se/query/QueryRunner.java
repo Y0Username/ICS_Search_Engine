@@ -50,7 +50,7 @@ public class QueryRunner {
 		final int NUMBER_OF_SEARCH_RESULTS = 20;
 		QueryRunner queryRunner = new QueryRunner();
 		int i = 0;
-		for (SearchResult result : queryRunner.search("software engineering")) {
+		for (SearchResult result : queryRunner.search("crista lopes")) {
 			System.out.println(result);
 			i++;
 			if (i == NUMBER_OF_SEARCH_RESULTS) {
