@@ -11,11 +11,13 @@
 <body>
 	<div>
 <%
-        List<SearchResult> searchResults = (ArrayList<SearchResult>)request.getAttribute("searchResults");
+        List<SearchResult> searchResults = (List<SearchResult>)request.getAttribute("searchResults");
         //out.print("Results for search query: ");
 		//out.print("\n");
 		for (SearchResult result : searchResults) {%>
-		    <p> <a href="<%="//"+result.getDocument().getUrl()%>"> <%=result.getDocument().getUrl()%> </a>  &emsp; SCORE: <%=result.getScore().toString()%></p>
+		    <p> <a href="<%="//"+result.getDocument().getUrl()%>"> <%=result.getDocument().getUrl()%> </a>  &emsp; SCORE: <%=result.getScore().toString()%>
+		    <br> <%=result.getSnippet()%>
+		    </p>
 		<%}%>
 	</div>
 </body>

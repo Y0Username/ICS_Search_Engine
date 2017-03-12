@@ -46,8 +46,17 @@ public class QueryRunner {
 		List<SearchResult> results = new ArrayList<SearchResult>(
 				searchResults.values());
 		Collections.sort(results);
+		final int NUMBER_OF_SEARCH_RESULTS = 10;
+		int i = 0;
+		for (SearchResult result : results) {
+			generateSnippet(result);
+			i++;
+			if (i == NUMBER_OF_SEARCH_RESULTS) {
+				break;
+			}
+		}
 
-		return results;
+		return results.subList(0, NUMBER_OF_SEARCH_RESULTS);
 	}
 
 	private static void generateSnippet(SearchResult result) {
@@ -77,16 +86,10 @@ public class QueryRunner {
 	}
 
 	public static void main(String[] args) {
-		final int NUMBER_OF_SEARCH_RESULTS = 20;
 		QueryRunner queryRunner = new QueryRunner();
-		int i = 0;
 		for (SearchResult result : queryRunner.search("crista lopes")) {
-			generateSnippet(result);
 			System.out.println(result);
-			i++;
-			if (i == NUMBER_OF_SEARCH_RESULTS) {
-				break;
-			}
+			System.out.println(result.getSnippet());
 		}
 	}
 }
