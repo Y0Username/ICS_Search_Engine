@@ -9,6 +9,12 @@
 <title>Search Engine</title>
 </head>
 <body>
+    <div>
+		<form action="results" method="post">
+			<input type="text" name="search" class="search"><br>
+			<input type="submit" value="search" class="button">
+		</form>
+	</div>
 	<div>
 <%
         List<SearchResult> searchResults = (List<SearchResult>)request.getAttribute("searchResults");
