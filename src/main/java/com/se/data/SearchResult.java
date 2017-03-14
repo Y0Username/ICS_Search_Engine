@@ -8,9 +8,12 @@ public class SearchResult implements Comparable<SearchResult> {
 	private Double score;
 	private String snippet;
 	private List<List<Integer>> positions;
+	private Double cosine;
+
 
 	public SearchResult() {
 		score = 0.0;
+		cosine = 0.0;
 		positions = new ArrayList<>();
 	}
 
@@ -22,13 +25,19 @@ public class SearchResult implements Comparable<SearchResult> {
 		this.score = score;
 	}
 
-	public void addScore(Double tfIdf) {
-		this.score += tfIdf;
+	public void addScore(Double tfIdf) { this.score += tfIdf; }
+
+	public Double getCosine() { return cosine; }
+
+	public void setCosine(Double cosine) { this.cosine = cosine; }
+
+	public void addCosine(Double qtfIdf, Double tfIdf) {
+		this.cosine += qtfIdf * tfIdf;
 	}
 
 	@Override
 	public int compareTo(SearchResult arg0) {
-		return Double.compare(arg0.score, this.score);
+		return Double.compare(arg0.cosine, this.cosine);
 	}
 
 	public Document getDocument() {
@@ -61,7 +70,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
 	@Override
 	public String toString() {
-		return "SearchResult [document=" + document + ", score=" + score
+		return "SearchResult [document=" + document + "cosine=" + cosine + ", score=" + score
 				+ ", positions=" + positions + ", snippet=" + snippet + "]";
 	}
 

@@ -46,9 +46,7 @@ public class Tokenizer {
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
 		while (m.find()) {
 			String currentWord = m.group(0);
-			if (isStopWord(currentWord)) {
-				continue;
-			}
+			if (isStopWord(currentWord)) { continue; }
 			currentWord = stem(currentWord);
 			strings.add(currentWord);
 		}
@@ -86,19 +84,14 @@ public class Tokenizer {
 			String tag = element.tagName();
 			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
-				if (posting == null) {
-					continue;
-				}
+				if (posting == null) { continue; }
 				posting.addTag(tag);
 			}
 		}
 	}
 
 	public static boolean isStopWord(String currentWord) {
-		if (currentWord.length() < 3) {
-			return true;
-		}
-		return Stopwords.isStopword(currentWord);
+		return currentWord.length() < 3 || Stopwords.isStopword(currentWord);
 	}
 
 }

@@ -15,7 +15,7 @@
         //out.print("Results for search query: ");
 		//out.print("\n");
 		for (SearchResult result : searchResults) {%>
-		    <p> <a href="<%="//"+result.getDocument().getUrl()%>"> <%=result.getDocument().getUrl()%> </a>  &emsp; SCORE: <%=result.getScore().toString()%>
+		    <p> <a href="<%="//"+result.getDocument().getUrl()%>"> <%=result.getDocument().getUrl()%> </a>  &emsp; SCORE: <%=result.getCosine().toString()%>
 		    <br> <%=result.getSnippet()%>
 		    </p>
 		<%}%>
