@@ -43,25 +43,19 @@ public class QueryRunner {
 			}
 		}
 
-		List<SearchResult> results = new ArrayList<SearchResult>(
-				searchResults.values());
+		List<SearchResult> results = new ArrayList<>(searchResults.values());
 		Collections.sort(results);
 		final int NUMBER_OF_SEARCH_RESULTS = 10;
-		int i = 0;
-		for (SearchResult result : results) {
-			generateSnippet(result);
-			i++;
-			if (i == NUMBER_OF_SEARCH_RESULTS) {
-				break;
-			}
+		List<SearchResult> topKresults = results.subList(0, NUMBER_OF_SEARCH_RESULTS);
+		for (int i=0; i<NUMBER_OF_SEARCH_RESULTS; i++) {
+			SearchResult result = results.get(i);
+			SnippetRange range = Snippet.findRange(result.getPositions());
+			result.setSnippet(generateSnippet(result.getDocument(), range));
 		}
-
-		return results.subList(0, NUMBER_OF_SEARCH_RESULTS);
+		return topKresults;
 	}
 
-	private static void generateSnippet(SearchResult result) {
-		Document document = result.getDocument();
-		SnippetRange range = Snippet.findRange(result.getPositions());
+	private String generateSnippet(Document document, SnippetRange range) {
 		int MIN_WORDS_IN_SNIPPET = 25;
 		int MAX_WORDS_IN_SNIPPET = 40;
 		int fromIndex = range.getFromIndex();
@@ -82,14 +76,13 @@ public class QueryRunner {
 		
 		String snippet = FileHandler.fetch(fromIndex,
 				toIndex, document.getfilePath(), document.getUrl());
-		result.setSnippet(snippet);
+		return snippet;
 	}
 
 	public static void main(String[] args) {
 		QueryRunner queryRunner = new QueryRunner();
 		for (SearchResult result : queryRunner.search("crista lopes")) {
 			System.out.println(result);
-			System.out.println(result.getSnippet());
 		}
 	}
 }

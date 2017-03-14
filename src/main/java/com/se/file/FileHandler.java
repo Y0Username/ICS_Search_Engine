@@ -35,10 +35,13 @@ public class FileHandler {
 	public static String configFetch(String key) {
 		Properties prop = new Properties();
 		InputStream input;
+		//TODO: Hardcoding file path; needs to be fixed
+		if(key == "path")
+			return "/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW/";
 		String value = "";
 		try {
-			input = new FileInputStream(
-					"src/main/resources/configuration.properties");
+			input = new FileInputStream("src/main/resources/configuration.properties");
+			//input = new FileInputStream("src/main/java/com/se/file/configuration.properties");
 			prop.load(input);
 			value = prop.getProperty(key).toString();
 		} catch (IOException ex) {

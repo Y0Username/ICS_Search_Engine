@@ -6,8 +6,8 @@ import java.util.List;
 public class SearchResult implements Comparable<SearchResult> {
 	private Document document;
 	private Double score;
-	private List<List<Integer>> positions;
 	private String snippet;
+	private List<List<Integer>> positions;
 
 	public SearchResult() {
 		score = 0.0;
