@@ -21,7 +21,7 @@ public class QueryRunner {
 
 	public List<SearchResult> search(String queryDoc) {
 		Map<String, Integer> query = new HashMap<>();
-		for (String term : Tokenizer.tokenize(queryDoc)) {
+		for (String term : Tokenizer.tokenize(queryDoc.toLowerCase())) {
 			if (query.containsKey(term)) {
 				query.put(term, query.get(term)+1);
 			} else {
@@ -73,7 +73,11 @@ public class QueryRunner {
 //			result.setScore(result.getScore()/result.getDocument().getDocLen());
 		}
 		Collections.sort(results);
-		final int NUMBER_OF_SEARCH_RESULTS = 10;
+		int NUMBER_OF_SEARCH_RESULTS = 0;
+		if(results.size() > 10)
+			NUMBER_OF_SEARCH_RESULTS = 10;
+		else
+			NUMBER_OF_SEARCH_RESULTS = results.size();
 		List<SearchResult> topKresults = results.subList(0, NUMBER_OF_SEARCH_RESULTS);
 		for (int i=0; i<NUMBER_OF_SEARCH_RESULTS; i++) {
 			SearchResult result = results.get(i);
@@ -111,7 +115,7 @@ public class QueryRunner {
 
 	public static void main(String[] args) {
 		QueryRunner queryRunner = new QueryRunner();
-		for (SearchResult result : queryRunner.search("crista lopes")) {
+		for (SearchResult result : queryRunner.search("Yathish")) {
 			System.out.println(result);
 		}
 	}
