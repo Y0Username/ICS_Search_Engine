@@ -8,3 +8,4 @@ data/*
 web-indexer.iml
 src/main/resources/configuration.properties
 .DS_Store
+/target/
