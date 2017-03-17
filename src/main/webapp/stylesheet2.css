@@ -1,19 +1,23 @@
 @CHARSET "UTF-8";
-.search {
+ .search {
 	width: 600px;
 	height: 30px;
 	border-style:solid;
 	font: 16px arial, sans-serif;
 	text-indent:5px;
-	}
+	} 
 	
-div {
-	display:block;
-	margin: auto;
-	text-align:center;
-	padding-top: 14%;
-}
-.button {
+/* div {
+	padding-top: 4%;
+	padding-left:5%;
+} */
+.footer{ 
+       position: fixed;     
+       text-align: center;    
+       bottom: 10px; 
+       width: 100%;
+   }
+/* .button {
 	border-style: 1px solid #d3d3d3;
 	background: #f3f3f3;
 	color:#696969;
@@ -25,11 +29,4 @@ div {
 	font-weight: bold;
 	padding: 7px;
 	border-radius:2px;
-}
-
-.footer{ 
-       position: fixed;     
-       text-align: center;    
-       bottom: 0px; 
-       width: 100%;
-   }
+} */

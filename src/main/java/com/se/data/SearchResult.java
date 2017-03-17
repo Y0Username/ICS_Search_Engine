@@ -37,7 +37,7 @@ public class SearchResult implements Comparable<SearchResult> {
 		return Double.compare(arg0.getTotalScore(), this.getTotalScore());
 	}
 
-	private Double getTotalScore() {
+	public Double getTotalScore() {
 		Double score = 0.0;
 		for (Entry<ScoreType, Double> entry : scores.entrySet()) {
 			score += entry.getKey().getScoringWeight() * entry.getValue();
