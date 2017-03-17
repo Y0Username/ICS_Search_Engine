@@ -65,7 +65,7 @@ public class QueryRunner {
 
 	public static void main(String[] args) {
 		QueryRunner queryRunner = new QueryRunner();
-		for (SearchResult result : queryRunner.search("Software Engineering")) {
+		for (SearchResult result : queryRunner.search("mondego")) {
 			System.out.println(result);
 		}
 	}

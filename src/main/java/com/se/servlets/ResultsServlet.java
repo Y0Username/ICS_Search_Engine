@@ -60,12 +60,12 @@ public class ResultsServlet extends HttpServlet {
 		String name = request.getParameter("search");
 		QueryRunner queryRunner = new QueryRunner();
 		List<SearchResult> searchResults = queryRunner.search(name);
-		List<SearchResultsUI> searchResultsUIs = new ArrayList<SearchResultsUI>();
+		List<SearchResultsUI> searchResultsUIs = new ArrayList<>();
 		for (SearchResult searchResult : searchResults) {
 			searchResultsUIs.add(new SearchResultsUI(searchResult));
 		}
 
-		request.setAttribute("searchResults", searchResultsUIs);
+		request.setAttribute("searchResultsUIs", searchResultsUIs);
 		request.getRequestDispatcher("search.jsp").forward(request, response);
 		
 //		out.print("Results for search query: " + name);

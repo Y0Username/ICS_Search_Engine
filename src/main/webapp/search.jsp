@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.util.*, java.io.*, com.se.data.SearchResult, com.se.data.Document"%>
+	import="java.util.*, java.io.*, com.se.servlets.SearchResultsUI, com.se.data.Document"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -22,7 +22,7 @@
 	<table>
 
 		<%
-			List<SearchResult> searchResults = (List<SearchResult>) request.getAttribute("searchResults");
+			List<SearchResultsUI> searchResultsUIs = (List<SearchResultsUI>) request.getAttribute("searchResultsUIs");
 		int page_search=1;
 		if(request.getParameter("page")!=null){	
 			out.println("Passed the method");
@@ -34,20 +34,20 @@
 			int init_page = ((page_no-1)*total)+1;
 			
 			for (int i = init_page; i < (page_no+total); i++) {
-				out.println(searchResults.get(i));
+				//out.println(searchResults.get(i));
 			}}
 			//out.print("Results for search query: ");
 			//out.print("\n");
 			
 
-			for (SearchResult result : searchResults) {
+			for (SearchResultsUI result : searchResultsUIs) {
 		%>
 
 		<tr>
 
-			<td><a href="<%="//" + result.getDocument().getUrl()%>"> <%=result.getDocument().getUrl()%>
+			<td><a href="<%="//" + result.getUrl()%>"> <%=result.getUrl()%>
 			</a> <br> <%=result.getSnippet()%></td>
-			<td>SCORE: <%=result.getTotalScore().toString()%>
+			<td>SCORE: <%=result.getScore().toString()%>
 			</td>
 			</div>
 
@@ -62,14 +62,14 @@
 	<div class="pagination">
 
 
-		<% 
+		<%--
 	int size=searchResults.size();
 	for(int i=0;i<size;i++)
 	{%>
 		<a
 			href="http://localhost:8080/web-indexer/search.jsp?page=<%out.print(i);%>"><%out.print(i);%></a>
 
-		<%}%>
+		<%}--%>
 	</div>
 </body>
 </html>
