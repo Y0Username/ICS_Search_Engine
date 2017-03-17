@@ -26,7 +26,6 @@ import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.Posting;
 import com.se.data.Utility;
-import com.se.data.parsedDocument;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
@@ -54,11 +53,10 @@ public class IndexerMR {
 					+ Integer.valueOf(parts[1]);
 			File file = new File(path + filePath);
 
-			parsedDocument pDoc;
 			try {
-				pDoc = Tokenizer.tokenize(file, docID, url);
-				Map<String, Posting> postingsMap = pDoc.getPostingMap();
-				Integer docLen = pDoc.getDocLength();
+				FileTokenizer fileTokenizer = new FileTokenizer(file, docID, url);
+				Map<String, Posting> postingsMap = fileTokenizer.getPostingMap();
+				Integer docLen = fileTokenizer.getNoOfTokens();
 
 				Document docEntry = new Document(docID, filePath, url, docLen);
 				db.insert(docEntry);

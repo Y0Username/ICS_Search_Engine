@@ -11,7 +11,7 @@ import com.se.data.Posting;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
-import com.se.index.Tokenizer;
+import com.se.index.StringTokenizer;
 
 public class TfIdfCalculator implements ScoringAlgorithm {
 
@@ -32,7 +32,7 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 	public List<SearchResult> calculate(String query) {
 
 
-		for (String term : Tokenizer.tokenize(query.toLowerCase())) {
+		for (String term : StringTokenizer.tokenize(query.toLowerCase())) {
 			InvertedIndex invertedIndex = databaseUtil
 					.searchInvertedIndex(term);
 			if (invertedIndex == null) {

@@ -13,7 +13,7 @@ import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
 import com.se.index.TfIdf;
-import com.se.index.Tokenizer;
+import com.se.index.StringTokenizer;
 
 public class CosineCalculator implements ScoringAlgorithm {
 
@@ -32,7 +32,7 @@ public class CosineCalculator implements ScoringAlgorithm {
 	@Override
 	public List<SearchResult> calculate(String query) {
 		Map<String, Integer> queryTf = new HashMap<>();
-		for (String term : Tokenizer.tokenize(query.toLowerCase())) {
+		for (String term : StringTokenizer.tokenize(query.toLowerCase())) {
 			if (queryTf.containsKey(term)) {
 				queryTf.put(term, queryTf.get(term) + 1);
 			} else {
