@@ -17,7 +17,8 @@ public class Posting implements Comparable<Posting> {
 	private Set<String> tags;
 	
 	public Posting() {
-		
+		positions = new ArrayList<Integer>();
+		tags = new HashSet<String>();
 	}
 
 	public Posting(Integer docID, List<Integer> positions) {
