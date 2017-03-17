@@ -17,7 +17,7 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
-	
+
 	public TfIdfCalculator() {
 		this(new HashMap<Integer, SearchResult>());
 	}
@@ -27,10 +27,8 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 		this.databaseUtil = DatabaseUtil.create();
 	}
 
-	
 	@Override
 	public List<SearchResult> calculate(String query) {
-
 
 		for (String term : StringTokenizer.tokenize(query.toLowerCase())) {
 			InvertedIndex invertedIndex = databaseUtil

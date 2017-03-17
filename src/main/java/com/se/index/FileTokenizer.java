@@ -1,5 +1,7 @@
 package com.se.index;
 
+import static com.se.util.Constants.HTML_TAGS;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -36,6 +38,9 @@ public class FileTokenizer {
 		for (Element element : doc.getAllElements()) {
 			List<String> tokens = StringTokenizer.tokenize(element.ownText());
 			String tag = element.tagName();
+			if(!HTML_TAGS.containsKey(tag)){
+				continue;
+			}
 			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
 				if (posting == null) {
@@ -45,7 +50,7 @@ public class FileTokenizer {
 			}
 		}
 	}
-
+	
 	private Map<String, Posting> createPostings(Collection<String> tokens,
 			Integer docID) {
 		Map<String, Posting> postingMap = new HashMap<>();
