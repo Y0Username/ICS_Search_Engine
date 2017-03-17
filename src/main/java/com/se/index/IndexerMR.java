@@ -34,7 +34,7 @@ public class IndexerMR {
 	private static final String PATH = "path";
 	private static final String BOOK_KEEPING_FILE = "bookkeeping";
 	private static Gson gson = new Gson();
-	private static DatabaseUtil db = new DatabaseUtil();
+	private static DatabaseUtil db = DatabaseUtil.create();
 	private static Utility utility = new Utility();
 
 	public static class TokenizerMapper extends

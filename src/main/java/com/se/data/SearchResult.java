@@ -1,43 +1,48 @@
 package com.se.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class SearchResult implements Comparable<SearchResult> {
 	private Document document;
-	private Double score;
+	private Map<ScoreType, Double> scores;
 	private String snippet;
 	private List<List<Integer>> positions;
-	private Double cosine;
-
 
 	public SearchResult() {
-		score = 0.0;
-		cosine = 0.0;
+		scores = new HashMap<>();
 		positions = new ArrayList<>();
 	}
 
-	public Double getScore() {
-		return score;
+	public Double getScore(ScoreType scoreType) {
+		if (scores.containsKey(scoreType)) {
+			return scores.get(scoreType);
+		}
+		return 0.0;
 	}
 
-	public void setScore(Double score) {
-		this.score = score;
+	public void setScore(ScoreType scoreType, Double score) {
+		this.scores.put(scoreType, score);
 	}
 
-	public void addScore(Double tfIdf) { this.score += tfIdf; }
-
-	public Double getCosine() { return cosine; }
-
-	public void setCosine(Double cosine) { this.cosine = cosine; }
-
-	public void addCosine(Double qtfIdf, Double tfIdf) {
-		this.cosine += qtfIdf * tfIdf;
+	public void addScore(ScoreType scoreType, Double addToScore) {
+		setScore(scoreType, getScore(scoreType) + addToScore);
 	}
 
 	@Override
 	public int compareTo(SearchResult arg0) {
-		return Double.compare(arg0.cosine, this.cosine);
+		return Double.compare(arg0.getTotalScore(), this.getTotalScore());
+	}
+
+	private Double getTotalScore() {
+		Double score = 0.0;
+		for (Entry<ScoreType, Double> entry : scores.entrySet()) {
+			score += entry.getKey().getScoringWeight() * entry.getValue();
+		}
+		return score;
 	}
 
 	public Document getDocument() {
@@ -70,8 +75,8 @@ public class SearchResult implements Comparable<SearchResult> {
 
 	@Override
 	public String toString() {
-		return "SearchResult [document=" + document + "cosine=" + cosine + ", score=" + score
-				+ ", positions=" + positions + ", snippet=" + snippet + "]";
+		return "SearchResult [document=" + document + ", score=" + scores + ", total_score=" + getTotalScore()
+				+ ", snippet=" + snippet + ", positions=" + positions + "]";
 	}
 
 }

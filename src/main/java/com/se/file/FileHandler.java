@@ -37,7 +37,7 @@ public class FileHandler {
 		InputStream input;
 		//TODO: Hardcoding file path; needs to be fixed
 		if(key == "path")
-			return "/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW/";
+			return "/home/magic/Downloads/WEBPAGES_RAW/";
 		String value = "";
 		try {
 			input = new FileInputStream("src/main/resources/configuration.properties");

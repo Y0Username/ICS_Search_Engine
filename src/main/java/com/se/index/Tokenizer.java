@@ -27,7 +27,8 @@ import com.se.data.parsedDocument;
 
 public class Tokenizer {
 
-	public static parsedDocument tokenize(File file, Integer docID, String url) throws IOException {
+	public static parsedDocument tokenize(File file, Integer docID, String url)
+			throws IOException {
 		Map<String, Posting> postingMap = new HashMap<>();
 		Integer dLen = 0;
 		parsedDocument pDoc = new parsedDocument(dLen, postingMap);
@@ -46,7 +47,9 @@ public class Tokenizer {
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
 		while (m.find()) {
 			String currentWord = m.group(0);
-			if (isStopWord(currentWord)) { continue; }
+			if (isStopWord(currentWord)) {
+				continue;
+			}
 			currentWord = stem(currentWord);
 			strings.add(currentWord);
 		}
@@ -84,7 +87,9 @@ public class Tokenizer {
 			String tag = element.tagName();
 			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
-				if (posting == null) { continue; }
+				if (posting == null) {
+					continue;
+				}
 				posting.addTag(tag);
 			}
 		}

@@ -18,8 +18,9 @@ import com.se.data.InvertedIndex;
 public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
 	private final Datastore datastore;
+	private static DatabaseUtil databaseUtil = null;
 
-	public DatabaseUtil() {
+	private DatabaseUtil() {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		Morphia morphia = new Morphia();
 
@@ -62,5 +63,11 @@ public class DatabaseUtil {
 		return query.asList();
 	}
 	
-
+	public static DatabaseUtil create(){
+		if(databaseUtil == null){
+			databaseUtil = new DatabaseUtil();
+		}
+		return databaseUtil;
+	}
+	
 }
