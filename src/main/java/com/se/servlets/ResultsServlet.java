@@ -2,6 +2,7 @@ package com.se.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -59,8 +60,12 @@ public class ResultsServlet extends HttpServlet {
 		String name = request.getParameter("search");
 		QueryRunner queryRunner = new QueryRunner();
 		List<SearchResult> searchResults = queryRunner.search(name);
+		List<SearchResultsUI> searchResultsUIs = new ArrayList<SearchResultsUI>();
+		for (SearchResult searchResult : searchResults) {
+			searchResultsUIs.add(new SearchResultsUI(searchResult));
+		}
 
-		request.setAttribute("searchResults", searchResults);
+		request.setAttribute("searchResults", searchResultsUIs);
 		request.getRequestDispatcher("search.jsp").forward(request, response);
 		
 //		out.print("Results for search query: " + name);

@@ -23,11 +23,12 @@ public class QueryRunner {
 		}
 		List<SearchResult> topKresults = results.subList(0,
 				NUMBER_OF_SEARCH_RESULTS);
+		
 		for (int i = 0; i < NUMBER_OF_SEARCH_RESULTS; i++) {
 			SearchResult result = results.get(i);
 			SnippetRange range = Snippet.findRange(result.getPositions());
 			result.setSnippet(generateSnippet(result.getDocument(), range));
-		}
+		}				
 		return topKresults;
 	}
 
@@ -62,3 +63,5 @@ public class QueryRunner {
 		}
 	}
 }
+
+

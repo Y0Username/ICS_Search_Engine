@@ -79,4 +79,8 @@ public class SearchResult implements Comparable<SearchResult> {
 				+ ", snippet=" + snippet + ", positions=" + positions + "]";
 	}
 
+	public String getUrl() {
+		return document.getUrl();
+	}
+
 }
