@@ -35,11 +35,11 @@ public class FileTokenizer {
 
 	private void extractTags(Map<String, Posting> postingMap, Document doc) {
 		for (Element element : doc.getAllElements()) {
-			List<String> tokens = StringTokenizer.tokenize(element.ownText());
 			String tag = element.tagName();
 			if(!HTML_TAGS.containsKey(tag)){
 				continue;
 			}
+			List<String> tokens = StringTokenizer.tokenize(element.ownText());
 			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
 				if (posting == null) {
