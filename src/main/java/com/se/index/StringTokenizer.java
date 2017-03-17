@@ -18,7 +18,7 @@ public class StringTokenizer {
 
 	public static List<String> tokenize(String text) {
 		List<String> strings = new ArrayList<>();
-		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
+		Matcher m = Pattern.compile("[^\\W_]+").matcher(text.toLowerCase());
 		while (m.find()) {
 			String currentWord = m.group(0);
 			if (isStopWord(currentWord)) {

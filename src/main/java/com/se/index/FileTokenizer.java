@@ -23,8 +23,7 @@ public class FileTokenizer {
 			throws IOException {
 		Document document = Jsoup.parse(file, "UTF-8", url);
 		postingMap = new HashMap<>();
-		List<String> tokens = StringTokenizer.tokenize(document.text()
-				.toLowerCase());
+		List<String> tokens = StringTokenizer.tokenize(document.text());
 		noOfTokens = tokens.size();
 		postingMap = createPostings(tokens, docID);
 		extractTags(postingMap, document);
