@@ -26,8 +26,8 @@ public class QueryRunner {
 		Collections.sort(results);
 		int NUMBER_OF_SEARCH_RESULTS = results.size();
 
-		if (results.size() > 50) {
-			NUMBER_OF_SEARCH_RESULTS = 50;
+		if (results.size() > 30) {
+			NUMBER_OF_SEARCH_RESULTS = 30;
 		}
 
 		List<SearchResult> topKresults = results.subList(0,
@@ -51,12 +51,13 @@ public class QueryRunner {
 			result.setSnippet(Snippet.generate(result.getDocument(),
 					result.getPositions()));
 		}
+		databaseUtil.close();
 		return finalTopK;
 	}
 
 	public static void main(String[] args) {
 		QueryRunner queryRunner = new QueryRunner();
-		for (SearchResult result : queryRunner.search("crista lopes")) {
+		for (SearchResult result : queryRunner.search("machine learning")) {
 			System.out.println(result);
 		}
 	}

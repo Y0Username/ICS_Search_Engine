@@ -12,8 +12,8 @@ import com.se.data.Posting;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
-import com.se.index.TfIdf;
 import com.se.index.StringTokenizer;
+import com.se.index.TfIdf;
 
 public class CosineCalculator implements ScoringAlgorithm {
 
@@ -61,8 +61,7 @@ public class CosineCalculator implements ScoringAlgorithm {
 					searchResult.setDocument(document);
 					searchResults.put(docId, searchResult);
 				}
-				searchResult.addScore(ScoreType.COSINE, qtfIdf
-						* tfIdf);
+				searchResult.addScore(ScoreType.COSINE, qtfIdf * tfIdf);
 				searchResult.addPositions(posting.getPositions());
 			}
 		}

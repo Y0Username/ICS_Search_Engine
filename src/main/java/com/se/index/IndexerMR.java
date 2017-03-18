@@ -116,6 +116,7 @@ public class IndexerMR {
 		FileInputFormat.addInputPath(job, new Path(path + book));
 		job.waitForCompletion(true);
 		db.insert(utility);
+		db.close();
 		PageRankAlgorithmMR.run();
 	}
 

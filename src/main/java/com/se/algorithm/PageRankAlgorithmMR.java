@@ -84,7 +84,7 @@ public class PageRankAlgorithmMR {
 						continue;
 					}
 					outgoingUrl = trim(outgoingUrl);
-					if (urlToDocId.containsKey(outgoingUrl) ) {
+					if (urlToDocId.containsKey(outgoingUrl)) {
 						int docId2 = urlToDocId.get(outgoingUrl);
 						graph.addEdge(docID + "_" + docId2, docID, docId2,
 								EdgeType.DIRECTED);
@@ -106,8 +106,8 @@ public class PageRankAlgorithmMR {
 		}
 	}
 
-	public static void run() throws IOException,
-			ClassNotFoundException, InterruptedException {
+	public static void run() throws IOException, ClassNotFoundException,
+			InterruptedException {
 		graph = new DirectedSparseGraph<Integer, String>();
 		db = DatabaseUtil.create();
 		Configuration conf = new Configuration();
@@ -126,12 +126,13 @@ public class PageRankAlgorithmMR {
 		pageRank = new PageRank<>(graph, ALPHA);
 		pageRank.evaluate();
 		Collection<Object> docPageranks = new ArrayList<Object>();
-		for (Integer vertex: graph.getVertices()) {
+		for (Integer vertex : graph.getVertices()) {
 			PageRankData docPagerank = new PageRankData();
 			docPagerank.setDocId(vertex);
 			docPagerank.setScore(pageRank.getVertexScore(vertex));
 			docPageranks.add(docPagerank);
-		} 
+		}
 		db.insert(docPageranks);
+		db.close();
 	}
 }

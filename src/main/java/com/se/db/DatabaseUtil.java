@@ -17,9 +17,10 @@ public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
 	private final Datastore datastore;
 	private static DatabaseUtil databaseUtil = null;
+	private MongoClient mongoClient;
 
 	private DatabaseUtil() {
-		MongoClient mongoClient = new MongoClient("192.168.0.21", 27017);
+		mongoClient = new MongoClient("192.168.0.21", 27017);
 		Morphia morphia = new Morphia();
 
 		morphia.mapPackage("com.se.index");
@@ -75,5 +76,9 @@ public class DatabaseUtil {
 		}
 		return result.getScore();
 	}
-	
+
+	public void close() {
+		databaseUtil = null;
+		mongoClient.close();
+	}
 }
