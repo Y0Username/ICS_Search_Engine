@@ -14,7 +14,8 @@ public class SnippetTest {
 		positions.add(getList(1, 5, 7));
 		positions.add(getList(3, 4, 21));
 		positions.add(getList(8, 34));
-		SnippetRange range = Snippet.findRange(positions);
+		Snippet snippet = new Snippet();
+		SnippetRange range = snippet.findRange(positions);
 
 		Assert.assertEquals(4, range.getFromIndex());
 		Assert.assertEquals(8, range.getToIndex());
@@ -34,7 +35,8 @@ public class SnippetTest {
 		positions.add(getList(1, 5, 7));
 		positions.add(getList(3, 4, 21));
 		positions.add(getList(34));
-		SnippetRange range = Snippet.findRange(positions);
+		Snippet snippet = new Snippet();
+		SnippetRange range = snippet.findRange(positions);
 		Assert.assertEquals(7, range.getFromIndex());
 		Assert.assertEquals(34, range.getToIndex());
 	}

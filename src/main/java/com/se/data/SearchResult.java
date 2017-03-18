@@ -83,4 +83,8 @@ public class SearchResult implements Comparable<SearchResult> {
 		return document.getUrl();
 	}
 
+	public Integer getDocId() {
+		return document.getDocID();
+	}
+
 }

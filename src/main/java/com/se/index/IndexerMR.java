@@ -22,6 +22,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
+import com.se.algorithm.PageRankAlgorithmMR;
 import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.Posting;
@@ -115,6 +116,7 @@ public class IndexerMR {
 		FileInputFormat.addInputPath(job, new Path(path + book));
 		job.waitForCompletion(true);
 		db.insert(utility);
+		PageRankAlgorithmMR.run();
 	}
 
 }
