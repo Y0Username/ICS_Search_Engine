@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -134,5 +135,11 @@ public class PageRankAlgorithmMR {
 		}
 		db.insert(docPageranks);
 		db.close();
+	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, IOException, InterruptedException {
+		Map<String, Integer> urlToDocIdMap = new HashMap<String, Integer>();
+		PageRankAlgorithmMR.run(urlToDocIdMap);
+		AnchorTextProcessingMR.run(urlToDocIdMap);
 	}
 }

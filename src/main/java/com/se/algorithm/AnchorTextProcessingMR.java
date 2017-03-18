@@ -2,8 +2,6 @@ package com.se.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -94,13 +92,10 @@ public class AnchorTextProcessingMR {
 
 		public void reduce(Text term, Iterable<IntWritable> values,
 				Context context) throws IOException, InterruptedException {
-			List<Integer> targetDocumentIds = new ArrayList<Integer>();
-			for (IntWritable targetDocumentId : values) {
-				targetDocumentIds.add(targetDocumentId.get());
-			}
-			Collections.sort(targetDocumentIds);
 			AnchorTextToken anchorTextToken = new AnchorTextToken();
-			anchorTextToken.setTargetDocIds(targetDocumentIds);
+			for (IntWritable targetDocumentId : values) {
+				anchorTextToken.addTargetDocId(targetDocumentId.get());
+			}
 			anchorTextToken.setTerm(term.toString());
 			db.insert(anchorTextToken);
 		}
@@ -127,5 +122,5 @@ public class AnchorTextProcessingMR {
 		job.waitForCompletion(true);
 		db.close();
 	}
-
+	
 }
