@@ -7,6 +7,10 @@
 	text-indent:5px;
 	} 
 	
+	p.padding {
+    padding-left: 2cm;
+}
+	
 /* div {
 	padding-top: 4%;
 	padding-left:5%;
@@ -17,7 +21,7 @@
        bottom: 10px; 
        width: 100%;
    }
-/* .button {
+ .button {
 	border-style: 1px solid #d3d3d3;
 	background: #f3f3f3;
 	color:#696969;
@@ -29,4 +33,4 @@
 	font-weight: bold;
 	padding: 7px;
 	border-radius:2px;
-} */
+}

@@ -10,16 +10,17 @@
 <title>Search Engine</title>
 </head>
 <body>
-	<form action="results" method="post" autocomplete="on">
+	<form action="results" method="post" autocomplete="on" align="center">
 
 		<input type="text" name="search" class="search" autocomplete="on"
-			placeholder="Enter your search term"> <input type="submit"
+			placeholder="Enter your search term">
+			<input type="submit"
 			value="search" class="button"><br>
 		<br>
 
 	</form>
 
-	<table>
+	<table cellspacing="50">
 
 		<%
 			List<SearchResultsUI> searchResultsUIs = (List<SearchResultsUI>) request.getAttribute("searchResultsUIs");
@@ -59,17 +60,17 @@
 			}
 		%>
 	</table>
-	<div class="pagination">
+	<%--  <div class="pagination">
 
 
-		<%--
-	int size=searchResults.size();
+<% 		
+	int size=searchResultsUIs.size();
 	for(int i=0;i<size;i++)
 	{%>
 		<a
 			href="http://localhost:8080/web-indexer/search.jsp?page=<%out.print(i);%>"><%out.print(i);%></a>
 
-		<%}--%>
-	</div>
+		<%}%>
+	</div>--%>
 </body>
 </html>
