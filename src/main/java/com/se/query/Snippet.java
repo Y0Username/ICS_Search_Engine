@@ -3,9 +3,17 @@ package com.se.query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Snippet {
+import com.se.data.Document;
+import com.se.file.FileHandler;
 
-	public static SnippetRange findRange(List<List<Integer>> positions) {
+public class Snippet {
+	private static Snippet snippet = null;
+	
+	Snippet() {
+		
+	}
+
+	SnippetRange findRange(List<List<Integer>> positions) {
 		SnippetRange range = new SnippetRange();
 		List<Integer> indices = new ArrayList<>(positions.size());
 		for (int i = 0; i < positions.size(); i++) {
@@ -35,7 +43,40 @@ public class Snippet {
 		return range;
 	}
 
-	private static boolean indicesAreWithinBound(List<List<Integer>> positions,
+	public static String generate(Document document,
+			List<List<Integer>> positions) {
+		if(snippet == null){
+			snippet = new Snippet();
+		}
+		SnippetRange range = snippet.findRange(positions);
+		return snippet.fetchSnippet(document, range);
+	}
+
+	private String fetchSnippet(Document document, SnippetRange range) {
+		int MIN_WORDS_IN_SNIPPET = 25;
+		int MAX_WORDS_IN_SNIPPET = 40;
+		int fromIndex = range.getFromIndex();
+		int toIndex = range.getToIndex();
+		int numberOfWords = toIndex - fromIndex;
+		if (numberOfWords < MIN_WORDS_IN_SNIPPET) {
+			int add = (MIN_WORDS_IN_SNIPPET - numberOfWords) / 2;
+			fromIndex = fromIndex - add;
+			if (fromIndex < 0) {
+				toIndex -= fromIndex;
+				fromIndex = 0;
+			}
+			toIndex = toIndex + add;
+		}
+		if (numberOfWords > MAX_WORDS_IN_SNIPPET) {
+			toIndex = fromIndex + MAX_WORDS_IN_SNIPPET;
+		}
+
+		String snippet = FileHandler.fetch(fromIndex, toIndex,
+				document.getfilePath(), document.getUrl());
+		return snippet;
+	}
+
+	private boolean indicesAreWithinBound(List<List<Integer>> positions,
 			List<Integer> indices) {
 		for (int i = 0; i < positions.size(); i++) {
 			if (indices.get(i) >= positions.get(i).size()) {
