@@ -6,15 +6,25 @@ public class SearchResultsUI {
 	private String snippet;
 	private String score;
 	private String url;
+	private String title;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public SearchResultsUI() {
 
 	}
-
+	
 	public SearchResultsUI(SearchResult searchResult) {
 		snippet = searchResult.getSnippet();
 		score = searchResult.getTotalScore().toString();
 		url = searchResult.getUrl();
+		title = searchResult.getUrl();
 	}
 
 	public String getSnippet() {
