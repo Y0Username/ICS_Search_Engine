@@ -60,7 +60,7 @@
 			}
 		%>
 	</table>
-	<div class="pagination">
+	<%--  <div class="pagination">
 
 
 <% 		
@@ -71,6 +71,6 @@
 			href="http://localhost:8080/web-indexer/search.jsp?page=<%out.print(i);%>"><%out.print(i);%></a>
 
 		<%}%>
-	</div>
+	</div>--%>
 </body>
 </html>
