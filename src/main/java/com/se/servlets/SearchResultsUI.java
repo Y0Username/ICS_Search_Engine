@@ -24,7 +24,7 @@ public class SearchResultsUI {
 		snippet = searchResult.getSnippet();
 		score = searchResult.getTotalScore().toString();
 		url = searchResult.getUrl();
-		title = searchResult.getUrl();
+		title = searchResult.getTitle();
 	}
 
 	public String getSnippet() {

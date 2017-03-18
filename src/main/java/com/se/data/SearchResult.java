@@ -11,6 +11,7 @@ public class SearchResult implements Comparable<SearchResult> {
 	private Map<ScoreType, Double> scores;
 	private String snippet;
 	private List<List<Integer>> positions;
+	private String title;
 
 	public SearchResult() {
 		scores = new HashMap<>();
@@ -87,4 +88,12 @@ public class SearchResult implements Comparable<SearchResult> {
 		return document.getDocID();
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+		
 }

@@ -7,9 +7,11 @@ import com.se.algorithm.CosineCalculator;
 import com.se.algorithm.ScoringAlgorithm;
 import com.se.algorithm.TagWeightCalculator;
 import com.se.algorithm.TfIdfCalculator;
+import com.se.data.Document;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
+import com.se.file.FileHandler;
 
 public class QueryRunner {
 
@@ -34,10 +36,11 @@ public class QueryRunner {
 				NUMBER_OF_SEARCH_RESULTS);
 
 		DatabaseUtil databaseUtil = DatabaseUtil.create();
-		for (SearchResult result: topKresults) {
-			result.addScore(ScoreType.PAGERANK, databaseUtil.getPagerank(result.getDocId()));
+		for (SearchResult result : topKresults) {
+			result.addScore(ScoreType.PAGERANK,
+					databaseUtil.getPagerank(result.getDocId()));
 		}
-		
+
 		if (topKresults.size() > 10) {
 			NUMBER_OF_SEARCH_RESULTS = 10;
 		}
@@ -48,8 +51,10 @@ public class QueryRunner {
 
 		for (int i = 0; i < NUMBER_OF_SEARCH_RESULTS; i++) {
 			SearchResult result = finalTopK.get(i);
-			result.setSnippet(Snippet.generate(result.getDocument(),
-					result.getPositions()));
+			Document document = result.getDocument();
+			result.setSnippet(Snippet.generate(document, result.getPositions()));
+			result.setTitle(FileHandler.getTitle(document.getfilePath(),
+					document.getUrl()));
 		}
 		databaseUtil.close();
 		return finalTopK;
