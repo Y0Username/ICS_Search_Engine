@@ -14,10 +14,11 @@ public class NDCG {
         List<String> queries = Arrays.asList("mondego", "machine learning", "software engineering", "security",
                 "student affairs", "graduate courses", "crista lopes", "REST", "computer games",
                 "information retrieval");
-        findNDCG(queries);
+        NDCG ndcg = new NDCG();
+        ndcg.findNDCG(queries);
     }
 
-    public static void findNDCG(List<String> queries){
+    public void findNDCG(List<String> queries){
         for(String query : queries) {
             Map<String, Double> googleMap = FileHandler.relevancyReader(query);
             List<Double> googleList = new ArrayList<>(googleMap.values());
@@ -32,7 +33,7 @@ public class NDCG {
         }
     }
 
-    public static void findNDCG(String query){
+    public void findNDCG(String query){
         Map<String, Double> googleMap = FileHandler.relevancyReader(query);
         List<Double> googleList = new ArrayList<>(googleMap.values());
 

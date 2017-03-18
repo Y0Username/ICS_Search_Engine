@@ -62,6 +62,7 @@ public class QueryRunner {
 		for (SearchResult result : queryRunner.search(query)) {
 			System.out.println(result);
 		}
-		NDCG.findNDCG(query);
+		NDCG ndcg = new NDCG();
+		ndcg.findNDCG(query);
 	}
 }
