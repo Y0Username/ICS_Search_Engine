@@ -11,7 +11,28 @@ import java.util.*;
  */
 public class NDCG {
     public static void main(String[] args) {
-        String query = "mondego";
+        List<String> queries = Arrays.asList("mondego", "machine learning", "software engineering", "security",
+                "student affairs", "graduate courses", "crista lopes", "REST", "computer games",
+                "information retrieval");
+        findNDCG(queries);
+    }
+
+    public static void findNDCG(List<String> queries){
+        for(String query : queries) {
+            Map<String, Double> googleMap = FileHandler.relevancyReader(query);
+            List<Double> googleList = new ArrayList<>(googleMap.values());
+
+            QueryRunner queryRunner = new QueryRunner();
+            List<SearchResult> SearchResults = queryRunner.search(query);
+            List<Double> chotheList = mapNDCG(query, SearchResults, googleMap);
+
+            List<Double> ndcg = calculateNDCG(googleList, chotheList);
+            System.out.println("Query:\t" + query);
+            System.out.println("NDCG:\t" + ndcg);
+        }
+    }
+
+    public static void findNDCG(String query){
         Map<String, Double> googleMap = FileHandler.relevancyReader(query);
         List<Double> googleList = new ArrayList<>(googleMap.values());
 
@@ -20,16 +41,19 @@ public class NDCG {
         List<Double> chotheList = mapNDCG(query, SearchResults, googleMap);
 
         List<Double> ndcg = calculateNDCG(googleList, chotheList);
-        System.out.println(ndcg);
+        System.out.println("Query:\t" + query);
+        System.out.println("NDCG:\t" + ndcg);
     }
 
-    public static List<Double> mapNDCG(String query, List<SearchResult> SearchResults, Map<String, Double> googleMap){
+    public static List<Double> mapNDCG(String query, List<SearchResult> SearchResults,
+                                       Map<String, Double> googleMap){
         Map<String, Double> chotheMap = new LinkedHashMap<>();
 
         if(query.equals("information retrieval")){
             SearchResults = SearchResults.subList(0, 5);
         }
         for (SearchResult result : SearchResults) {
+            //System.out.println(result.getUrl() + "\t SCORE: " + result.getTotalScore());
             if(googleMap.containsKey(result.getUrl())){
                 chotheMap.put(result.getUrl(), googleMap.get(result.getUrl()));
             }
