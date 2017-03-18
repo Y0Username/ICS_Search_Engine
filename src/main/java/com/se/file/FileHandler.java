@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.se.index.StringTokenizer;
+import com.se.index.WordsTokenizer;
 
 public class FileHandler {
 	public static List<File> walker(String path) {
@@ -37,7 +37,7 @@ public class FileHandler {
 		InputStream input;
 		//TODO: Hardcoding file path; needs to be fixed
 		if(key == "path")
-			return "/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW/";
+			return "/home/magic/Downloads/WEBPAGES_RAW/";
 		String value = "";
 		try {
 			input = new FileInputStream("src/main/resources/configuration.properties");
@@ -63,7 +63,7 @@ public class FileHandler {
 			while (m.find()) {
 				String currentWord = m.group(0);
 
-				if (!StringTokenizer.isStopWord(currentWord)) {
+				if (!WordsTokenizer.isStopWord(currentWord)) {
 					wordPosition++;
 				}
 
