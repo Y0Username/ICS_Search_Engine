@@ -14,7 +14,7 @@ import org.tartarus.snowball.ext.englishStemmer;
 
 import weka.core.Stopwords;
 
-public class StringTokenizer {
+public class WordsTokenizer {
 
 	public static List<String> tokenize(String text) {
 		List<String> strings = new ArrayList<>();

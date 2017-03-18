@@ -1,21 +1,17 @@
 package com.se.file;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.io.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.se.index.StringTokenizer;
+import com.se.index.WordsTokenizer;
 
 public class FileHandler {
+
 	public static List<File> walker(String path) {
 		List<File> files = new ArrayList<File>();
 		File root = new File(path);
@@ -37,7 +33,7 @@ public class FileHandler {
 		InputStream input;
 		//TODO: Hardcoding file path; needs to be fixed
 		if(key == "path")
-			return "/Users/Yathish/Desktop/School/Winter 2017/CS221/Project3/WEBPAGES_RAW/";
+			return "/home/magic/Downloads/WEBPAGES_RAW/";
 		String value = "";
 		try {
 			input = new FileInputStream("src/main/resources/configuration.properties");
@@ -63,7 +59,7 @@ public class FileHandler {
 			while (m.find()) {
 				String currentWord = m.group(0);
 
-				if (!StringTokenizer.isStopWord(currentWord)) {
+				if (!WordsTokenizer.isStopWord(currentWord)) {
 					wordPosition++;
 				}
 
@@ -82,6 +78,32 @@ public class FileHandler {
 			e.printStackTrace();
 		}
 		return stringBuilder.toString();
+	}
+
+	public static Map<String, Double> relevancyReader(String query){
+		Map<String, Double> relevancyMap = new LinkedHashMap<>();
+		try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/google_dcg.txt"))) {
+			String line;
+			while((line = br.readLine()) != null) {
+				if (line.equals(query)) {
+					for (int i = 0; i < 10; i++) {
+						line = br.readLine();
+						if (line == null) break;
+						java.util.StringTokenizer itr = new java.util.StringTokenizer(line);
+						if (itr.countTokens() < 2) {
+							break;
+						}
+						String url = itr.nextToken();
+						Double relevancy = Double.parseDouble(itr.nextToken());
+						relevancyMap.put(url, relevancy);
+					}
+				}
+			}
+		}
+		catch (IOException ex) {
+			System.err.println(ex);
+		}
+	return relevancyMap;
 	}
 
 }
