@@ -3,17 +3,17 @@ package com.se.data;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity
-public class Utility {
+@Entity("Corpus")
+public class CorpusData {
 	@Id
 	private String key = "N";
 	private Long value;
 
-	public Utility() {
+	public CorpusData() {
 		this(0l);
 	}
 
-	public Utility(long n) {
+	public CorpusData(long n) {
 		value = n;
 	}
 

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,11 +23,12 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import com.google.gson.Gson;
+import com.se.algorithm.AnchorTextProcessingMR;
 import com.se.algorithm.PageRankAlgorithmMR;
+import com.se.data.CorpusData;
 import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.Posting;
-import com.se.data.Utility;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
 
@@ -35,7 +37,7 @@ public class IndexerMR {
 	private static final String BOOK_KEEPING_FILE = "bookkeeping";
 	private static Gson gson = new Gson();
 	private static DatabaseUtil db = DatabaseUtil.create();
-	private static Utility utility = new Utility();
+	private static CorpusData utility = new CorpusData();
 
 	public static class TokenizerMapper extends
 			Mapper<Object, Text, Text, Text> {
@@ -55,8 +57,10 @@ public class IndexerMR {
 			File file = new File(path + filePath);
 
 			try {
-				FileTokenizer fileTokenizer = new FileTokenizer(file, docID, url);
-				Map<String, Posting> postingsMap = fileTokenizer.getPostingMap();
+				FileTokenizer fileTokenizer = new FileTokenizer(file, docID,
+						url);
+				Map<String, Posting> postingsMap = fileTokenizer
+						.getPostingMap();
 				Integer docLen = fileTokenizer.getNoOfTokens();
 
 				Document docEntry = new Document(docID, filePath, url, docLen);
@@ -102,9 +106,9 @@ public class IndexerMR {
 
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException, InterruptedException {
-		Configuration conf = new Configuration();
 		String path = FileHandler.configFetch(PATH);
 		String book = FileHandler.configFetch(BOOK_KEEPING_FILE);
+		Configuration conf = new Configuration();
 		conf.set(PATH, path);
 		Job job = Job.getInstance(conf, "Postings Creator");
 		job.setJarByClass(IndexerMR.class);
@@ -117,7 +121,9 @@ public class IndexerMR {
 		job.waitForCompletion(true);
 		db.insert(utility);
 		db.close();
-		PageRankAlgorithmMR.run();
+		Map<String, Integer> urlToDocId = new HashMap<String, Integer>();
+		PageRankAlgorithmMR.run(urlToDocId);
+		AnchorTextProcessingMR.run(urlToDocId);
 	}
 
 }
