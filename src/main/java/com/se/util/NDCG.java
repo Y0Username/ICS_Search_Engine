@@ -11,16 +11,50 @@ import java.util.*;
  */
 public class NDCG {
     public static void main(String[] args) {
-        String query = "mondego";
+        List<String> queries = Arrays.asList("mondego", "machine learning", "software engineering", "security",
+                "student affairs", "graduate courses", "crista lopes", "REST", "computer games",
+                "information retrieval");
+        NDCG ndcg = new NDCG();
+        ndcg.findNDCG(queries);
+    }
+
+    public void findNDCG(List<String> queries){
+        for(String query : queries) {
+            Map<String, Double> googleMap = FileHandler.relevancyReader(query);
+            List<Double> googleList = new ArrayList<>(googleMap.values());
+
+            QueryRunner queryRunner = new QueryRunner();
+            List<SearchResult> SearchResults = queryRunner.search(query);
+            List<Double> chotheList = mapNDCG(query, SearchResults, googleMap);
+
+            List<Double> ndcg = calculateNDCG(googleList, chotheList);
+            System.out.println("Query:\t" + query);
+            System.out.println("NDCG:\t" + ndcg);
+        }
+    }
+
+    public void findNDCG(String query){
         Map<String, Double> googleMap = FileHandler.relevancyReader(query);
         List<Double> googleList = new ArrayList<>(googleMap.values());
+
         QueryRunner queryRunner = new QueryRunner();
-        Map<String, Double> chotheMap = new LinkedHashMap<>();
         List<SearchResult> SearchResults = queryRunner.search(query);
+        List<Double> chotheList = mapNDCG(query, SearchResults, googleMap);
+
+        List<Double> ndcg = calculateNDCG(googleList, chotheList);
+        System.out.println("Query:\t" + query);
+        System.out.println("NDCG:\t" + ndcg);
+    }
+
+    public static List<Double> mapNDCG(String query, List<SearchResult> SearchResults,
+                                       Map<String, Double> googleMap){
+        Map<String, Double> chotheMap = new LinkedHashMap<>();
+
         if(query.equals("information retrieval")){
             SearchResults = SearchResults.subList(0, 5);
         }
         for (SearchResult result : SearchResults) {
+            //System.out.println(result.getUrl() + "\t SCORE: " + result.getTotalScore());
             if(googleMap.containsKey(result.getUrl())){
                 chotheMap.put(result.getUrl(), googleMap.get(result.getUrl()));
             }
@@ -28,8 +62,11 @@ public class NDCG {
                 chotheMap.put(result.getUrl(), 0.0);
             }
         }
-
         List<Double> chotheList = new ArrayList<>(chotheMap.values());
+        return chotheList;
+    }
+
+    public static List<Double> calculateNDCG(List<Double> googleList, List<Double> chotheList){
         for(int i = 1; i < googleList.size(); i++){
             googleList.set(i, googleList.get(i) / (Math.log10(i+1) / Math.log10(2)));
             googleList.set(i, (googleList.get(i) + googleList.get(i-1)));
@@ -40,6 +77,7 @@ public class NDCG {
         for(int i = 0; i < googleList.size(); i++){
             ndcg.add(chotheList.get(i) / googleList.get(i));
         }
-        System.out.println(ndcg);
+        return ndcg;
     }
+
 }

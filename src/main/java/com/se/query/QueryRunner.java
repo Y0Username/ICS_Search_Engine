@@ -12,6 +12,7 @@ import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
+import com.se.util.NDCG;
 
 public class QueryRunner {
 
@@ -61,9 +62,12 @@ public class QueryRunner {
 	}
 
 	public static void main(String[] args) {
+		String query = "mondego";
 		QueryRunner queryRunner = new QueryRunner();
-		for (SearchResult result : queryRunner.search("machine learning")) {
+		for (SearchResult result : queryRunner.search(query)) {
 			System.out.println(result);
 		}
+		NDCG ndcg = new NDCG();
+		ndcg.findNDCG(query);
 	}
 }
