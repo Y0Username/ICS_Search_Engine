@@ -1,8 +1,5 @@
 package com.se.db;
 
-/**
- * Created by Yathish on 3/2/17.
- */
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class DatabaseUtil {
 	private static DatabaseUtil databaseUtil = null;
 
 	private DatabaseUtil() {
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoClient mongoClient = new MongoClient("192.168.0.21", 27017);
 		Morphia morphia = new Morphia();
 
 		morphia.mapPackage("com.se.index");
@@ -56,7 +53,7 @@ public class DatabaseUtil {
 			System.err.println(exception);
 		}
 	}
-
+	
 	public <T> List<T> search(Class<T> tClass, String key, Object value) {
 		Query<T> query = datastore.createQuery(tClass);
 		query.field(key).equals(value);
