@@ -11,6 +11,7 @@ import org.mongodb.morphia.query.Query;
 import com.mongodb.MongoClient;
 import com.se.data.Document;
 import com.se.data.InvertedIndex;
+import com.se.data.PageRankData;
 
 public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
@@ -65,6 +66,14 @@ public class DatabaseUtil {
 			databaseUtil = new DatabaseUtil();
 		}
 		return databaseUtil;
+	}
+
+	public Double getPagerank(Integer docId) {
+		PageRankData result = searchById(PageRankData.class, docId);
+		if(result == null){
+			return 0.0;
+		}
+		return result.getScore();
 	}
 	
 }
