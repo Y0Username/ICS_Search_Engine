@@ -23,7 +23,7 @@ public class FileTokenizer {
 			throws IOException {
 		Document document = Jsoup.parse(file, "UTF-8", url);
 		postingMap = new HashMap<>();
-		List<String> tokens = WordsTokenizer.tokenize(document.text());
+		List<String> tokens = WordsTokenizer.tokenizeWithStemmingFilterStop(document.text());
 		noOfTokens = tokens.size();
 		postingMap = createPostings(tokens, docID);
 		extractTags(postingMap, document);
@@ -39,7 +39,7 @@ public class FileTokenizer {
 			if(!HTML_TAGS.containsKey(tag)){
 				continue;
 			}
-			List<String> tokens = WordsTokenizer.tokenize(element.ownText());
+			List<String> tokens = WordsTokenizer.tokenizeWithStemmingFilterStop(element.ownText());
 			for (String token : tokens) {
 				Posting posting = postingMap.get(token);
 				if (posting == null) {

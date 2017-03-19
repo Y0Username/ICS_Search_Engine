@@ -28,7 +28,7 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 
 	@Override
 	public List<SearchResult> calculate(String query) {
-		for (String term : WordsTokenizer.tokenize(query.toLowerCase())) {
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			AnchorTextToken anchorTextToken = databaseUtil
 					.searchAnchorText(term);
 			if (anchorTextToken == null) {

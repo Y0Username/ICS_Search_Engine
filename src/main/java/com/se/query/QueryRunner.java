@@ -1,7 +1,9 @@
 package com.se.query;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.se.algorithm.AnchorTextCalculator;
 import com.se.algorithm.CosineCalculator;
@@ -13,6 +15,7 @@ import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
+import com.se.index.WordsTokenizer;
 import com.se.util.NDCG;
 
 public class QueryRunner {
@@ -57,7 +60,8 @@ public class QueryRunner {
 		for (int i = 0; i < NUMBER_OF_SEARCH_RESULTS; i++) {
 			SearchResult result = finalTopK.get(i);
 			Document document = result.getDocument();
-			result.setSnippet(Snippet.generate(document, result.getPositions()));
+			String snippet = Snippet.generate(document, result.getPositions());
+			result.setSnippet(highlight(snippet, query));
 			result.setTitle(FileHandler.getTitle(document.getfilePath(),
 					document.getUrl()));
 		}
@@ -65,8 +69,28 @@ public class QueryRunner {
 		return finalTopK;
 	}
 
+	private String highlight(String snippet, String query) {
+		List<String> tokensList = WordsTokenizer.tokenize(query);
+		Set<String> queryTokens = new HashSet<>();
+		for (String string : tokensList) {
+			queryTokens.add(string);
+		}
+		List<String> snippetTokensList = WordsTokenizer.tokenize(snippet);
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String string : snippetTokensList) {
+			if (queryTokens.contains(string)) {
+				stringBuilder.append("<b>" + string + "</b>");
+			} else {
+				stringBuilder.append(string);
+			}
+			stringBuilder.append(" ");
+		}
+
+		return stringBuilder.toString();
+	}
+
 	public static void main(String[] args) {
-		String query = "mondego";
+		String query = "crista lopes";
 		QueryRunner queryRunner = new QueryRunner();
 		for (SearchResult result : queryRunner.search(query)) {
 			System.out.println(result);

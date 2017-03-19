@@ -21,8 +21,8 @@ public class DatabaseUtil {
 	private MongoClient mongoClient;
 
 	private DatabaseUtil() {
-//		mongoClient = new MongoClient("192.168.0.21", 27017);
-		mongoClient = new MongoClient("localhost", 27017);
+		mongoClient = new MongoClient("192.168.0.21", 27017);
+//		mongoClient = new MongoClient("localhost", 27017);
 		Morphia morphia = new Morphia();
 
 		morphia.mapPackage("com.se.index");

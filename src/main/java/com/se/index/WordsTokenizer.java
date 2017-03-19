@@ -16,7 +16,7 @@ import weka.core.Stopwords;
 
 public class WordsTokenizer {
 
-	public static List<String> tokenize(String text) {
+	public static List<String> tokenizeWithStemmingFilterStop(String text) {
 		List<String> strings = new ArrayList<>();
 		Matcher m = Pattern.compile("[^\\W_]+").matcher(text.toLowerCase());
 		while (m.find()) {
@@ -25,6 +25,16 @@ public class WordsTokenizer {
 				continue;
 			}
 			currentWord = stem(currentWord);
+			strings.add(currentWord);
+		}
+		return strings;
+	}
+	
+	public static List<String> tokenize(String text) {
+		List<String> strings = new ArrayList<>();
+		Matcher m = Pattern.compile("[^\\W_]+").matcher(text.toLowerCase());
+		while (m.find()) {
+			String currentWord = m.group(0);
 			strings.add(currentWord);
 		}
 		return strings;

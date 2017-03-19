@@ -32,7 +32,7 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 	@Override
 	public List<SearchResult> calculate(String query) {
 
-		for (String term : WordsTokenizer.tokenize(query.toLowerCase())) {
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			InvertedIndex invertedIndex = databaseUtil
 					.searchInvertedIndex(term);
 			if (invertedIndex == null) {

@@ -67,7 +67,7 @@ public class AnchorTextProcessingMR {
 					if (targetDocId == null) {
 						continue;
 					}
-					List<String> tokens = WordsTokenizer.tokenize(element
+					List<String> tokens = WordsTokenizer.tokenizeWithStemmingFilterStop(element
 							.text());
 					for (String token : tokens) {
 						TermSourceTarget termSourceTarget = new TermSourceTarget();

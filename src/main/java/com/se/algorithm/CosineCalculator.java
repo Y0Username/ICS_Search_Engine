@@ -32,7 +32,7 @@ public class CosineCalculator implements ScoringAlgorithm {
 	@Override
 	public List<SearchResult> calculate(String query) {
 		Map<String, Integer> queryTf = new HashMap<>();
-		for (String term : WordsTokenizer.tokenize(query.toLowerCase())) {
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			if (queryTf.containsKey(term)) {
 				queryTf.put(term, queryTf.get(term) + 1);
 			} else {
