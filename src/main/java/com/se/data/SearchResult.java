@@ -74,11 +74,6 @@ public class SearchResult implements Comparable<SearchResult> {
 		this.positions = positions;
 	}
 
-	@Override
-	public String toString() {
-		return "SearchResult [document=" + document + ", score=" + scores + ", total_score=" + getTotalScore()
-				+ ", snippet=" + snippet + ", positions=" + positions + "]";
-	}
 
 	public String getUrl() {
 		return document.getUrl();
@@ -94,6 +89,13 @@ public class SearchResult implements Comparable<SearchResult> {
 
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public String toString() {
+		return "SearchResult [document=" + document + ", scores=" + scores
+				+ ", snippet=" + snippet + ", positions=" + positions
+				+ ", title=" + title + "]";
 	}
 		
 }

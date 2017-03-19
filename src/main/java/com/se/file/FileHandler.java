@@ -117,6 +117,9 @@ public class FileHandler {
 			Document document = Jsoup.parse(new File(path + filePath), "UTF-8",
 					url);
 			title = document.title();
+			if(title ==null || title.isEmpty()){
+				title = url;
+			}
 		} catch (IOException exception) {
 			System.err.println(exception.getMessage());
 		}
