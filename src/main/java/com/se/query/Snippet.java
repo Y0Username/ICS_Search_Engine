@@ -13,8 +13,11 @@ public class Snippet {
 		
 	}
 
-	SnippetRange findRange(List<List<Integer>> positions) {
+	SnippetRange findRange(List<List<Integer>> positions) {		
 		SnippetRange range = new SnippetRange();
+		if(positions.isEmpty()){
+			return range;
+		}
 		List<Integer> indices = new ArrayList<>(positions.size());
 		for (int i = 0; i < positions.size(); i++) {
 			indices.add(0);
