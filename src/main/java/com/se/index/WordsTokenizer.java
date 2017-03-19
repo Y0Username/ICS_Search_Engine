@@ -32,7 +32,7 @@ public class WordsTokenizer {
 	
 	public static List<String> tokenize(String text) {
 		List<String> strings = new ArrayList<>();
-		Matcher m = Pattern.compile("[^\\W_]+").matcher(text.toLowerCase());
+		Matcher m = Pattern.compile("[^\\W_]+").matcher(text);
 		while (m.find()) {
 			String currentWord = m.group(0);
 			strings.add(currentWord);
