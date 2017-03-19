@@ -1,7 +1,8 @@
 package com.se.data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -10,10 +11,10 @@ import org.mongodb.morphia.annotations.Id;
 public class AnchorTextToken {
 	@Id
 	private String term;
-	private Set<Integer> targetDocIds;
-	
+	private List<AnchorPosting> targetAnchorTexts;
+
 	public AnchorTextToken() {
-		targetDocIds = new HashSet<Integer>();
+		targetAnchorTexts = new ArrayList<AnchorPosting>();
 	}
 
 	public String getTerm() {
@@ -24,16 +25,21 @@ public class AnchorTextToken {
 		this.term = term;
 	}
 
-	public Set<Integer> getTargetDocIds() {
-		return targetDocIds;
+	public List<AnchorPosting> getTargetDocIds() {
+		return targetAnchorTexts;
 	}
 
-	public void setTargetDocIds(Set<Integer> targetDocIds) {
-		this.targetDocIds = targetDocIds;
+	public void setTargetDocIds(List<AnchorPosting> targetDocIds) {
+		this.targetAnchorTexts = targetDocIds;
 	}
 
-	public void addTargetDocId(int targetDoc) {
-		targetDocIds.add(targetDoc);
+	public void addTargetDocId(AnchorPosting targetDoc) {
+		targetAnchorTexts.add(targetDoc);
+	}
+
+	public void sortTargetDocIds() {
+		Collections.sort(targetAnchorTexts);
+		
 	}
 
 }
