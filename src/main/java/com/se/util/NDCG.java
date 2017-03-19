@@ -33,12 +33,10 @@ public class NDCG {
         }
     }
 
-    public void findNDCG(String query){
+    public void findNDCG(String query, List<SearchResult> SearchResults){
         Map<String, Double> googleMap = FileHandler.relevancyReader(query);
         List<Double> googleList = new ArrayList<>(googleMap.values());
 
-        QueryRunner queryRunner = new QueryRunner();
-        List<SearchResult> SearchResults = queryRunner.search(query);
         List<Double> chotheList = mapNDCG(query, SearchResults, googleMap);
 
         List<Double> ndcg = calculateNDCG(googleList, chotheList);

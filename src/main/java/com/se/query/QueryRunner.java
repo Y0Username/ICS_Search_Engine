@@ -92,10 +92,11 @@ public class QueryRunner {
 	public static void main(String[] args) {
 		String query = "crista lopes";
 		QueryRunner queryRunner = new QueryRunner();
-		for (SearchResult result : queryRunner.search(query)) {
+		List<SearchResult> SearchResults = queryRunner.search(query);
+		for (SearchResult result : SearchResults) {
 			System.out.println(result);
 		}
 		NDCG ndcg = new NDCG();
-		ndcg.findNDCG(query);
+		ndcg.findNDCG(query, SearchResults);
 	}
 }
