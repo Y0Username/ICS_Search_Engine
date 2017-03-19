@@ -9,6 +9,7 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 
 import com.mongodb.MongoClient;
+import com.se.data.AnchorTextToken;
 import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.PageRankData;
@@ -20,7 +21,8 @@ public class DatabaseUtil {
 	private MongoClient mongoClient;
 
 	private DatabaseUtil() {
-		mongoClient = new MongoClient("192.168.0.21", 27017);
+//		mongoClient = new MongoClient("192.168.0.21", 27017);
+		mongoClient = new MongoClient("localhost", 27017);
 		Morphia morphia = new Morphia();
 
 		morphia.mapPackage("com.se.index");
@@ -80,5 +82,9 @@ public class DatabaseUtil {
 	public void close() {
 		databaseUtil = null;
 		mongoClient.close();
+	}
+
+	public AnchorTextToken searchAnchorText(String term) {
+		return searchById(AnchorTextToken.class, term);
 	}
 }

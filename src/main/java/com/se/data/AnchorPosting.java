@@ -22,7 +22,11 @@ public class AnchorPosting implements Comparable<AnchorPosting>{
 	public List<Integer> getSourceDocIds() {
 		return sourceDocIds;
 	}
-
+	
+	public Integer getSourceDocIdsSize(){
+		return this.sourceDocIds.size();
+	}
+	
 	public void setSourceDocIds(List<Integer> sourceDocIds) {
 		this.sourceDocIds = sourceDocIds;
 	}

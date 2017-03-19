@@ -3,6 +3,7 @@ package com.se.query;
 import java.util.Collections;
 import java.util.List;
 
+import com.se.algorithm.AnchorTextCalculator;
 import com.se.algorithm.CosineCalculator;
 import com.se.algorithm.ScoringAlgorithm;
 import com.se.algorithm.TagWeightCalculator;
@@ -22,8 +23,11 @@ public class QueryRunner {
 		ScoringAlgorithm cosineCalculator = new CosineCalculator(
 				tfIdfCalculator.getSearchResults());
 		results = cosineCalculator.calculate(query);
-		ScoringAlgorithm tagWeightCalculator = new TagWeightCalculator(
+		ScoringAlgorithm anchorTextCalculator = new AnchorTextCalculator(
 				cosineCalculator.getSearchResults());
+		anchorTextCalculator.calculate(query);
+		ScoringAlgorithm tagWeightCalculator = new TagWeightCalculator(
+				anchorTextCalculator.getSearchResults());
 		results = tagWeightCalculator.calculate(query);
 
 		Collections.sort(results);
