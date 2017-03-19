@@ -45,7 +45,7 @@
 		%>
 
 		<tr>
-			<td><a href="<%="//" + result.getTitle()%>"> <%=result.getTitle()%></a><br>
+			<td><a href="<%="//" + result.getUrl()%>"> <%=result.getTitle()%></a><br>
 			<div style="color:#006621"> <%=result.getUrl()%> </div> 
 			<br> <%=result.getSnippet()%></td>
 			<td>SCORE: <%=result.getScore().toString()%>
