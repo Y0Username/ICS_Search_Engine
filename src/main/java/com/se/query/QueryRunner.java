@@ -38,36 +38,34 @@ public class QueryRunner {
 		DatabaseUtil databaseUtil = DatabaseUtil.create();
 		Map<String, InvertedIndex> tokenToInvertedIndex = databaseUtil
 				.getInvertedIndexRows(query);
-		watch.lap("Fetched from database");
+		watch.lap("Data fetch");
 
 		ScoringAlgorithm tfIdfCalculator = new TfIdfCalculator(
 				tokenToInvertedIndex);
 		searchResults = tfIdfCalculator.calculate(query);
-		watch.lap("TFIDFCalculator");
+		watch.lap("TFIDF");
 
 		ScoringAlgorithm cosineCalculator = new CosineCalculator(searchResults,
 				tokenToInvertedIndex);
 		searchResults = cosineCalculator.calculate(query);
-		watch.lap("CosineCalculator");
+		watch.lap("Cosine");
 
 		ScoringAlgorithm anchorTextCalculator = new AnchorTextCalculator(
 				searchResults);
 		searchResults = anchorTextCalculator.calculate(query);
-		watch.lap("AnchorTextCalculator");
+		watch.lap("AnchorText");
 
 		ScoringAlgorithm tagWeightCalculator = new TagWeightCalculator(
 				searchResults, tokenToInvertedIndex);
 		searchResults = tagWeightCalculator.calculate(query);
-		watch.lap("TagWeightCalculator");
+		watch.lap("TagWeight");
+
+		ScoringAlgorithm pageRankCalculator = new PageRankCalculator(
+				searchResults);
+		searchResults = pageRankCalculator.calculate(query);
+		watch.lap("PageRank");
 
 		List<SearchResult> results = new ArrayList<>(searchResults.values());
-		results = filterSearchResults(results, 100);
-
-		for (SearchResult result : results) {
-			result.addScore(ScoreType.PAGERANK,
-					databaseUtil.getPagerank(result.getDocId()));
-		}
-
 		normalizeScores(results);
 
 		results = filterSearchResults(results, 10);
@@ -79,9 +77,8 @@ public class QueryRunner {
 			result.setTitle(FileHandler.getTitle(document.getfilePath(),
 					document.getUrl()));
 		}
-		databaseUtil.close();
+		DatabaseUtil.close();
 		watch.stop("PageRank");
-
 		return results;
 	}
 
@@ -142,7 +139,7 @@ public class QueryRunner {
 	}
 
 	public static void main(String[] args) {
-		String query = "software engineering";
+		String query = "crista lopes";
 		QueryRunner queryRunner = new QueryRunner();
 		List<SearchResult> searchResults = queryRunner.search(query);
 		for (SearchResult result : searchResults) {

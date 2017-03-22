@@ -10,12 +10,10 @@ import com.se.data.InvertedIndex;
 import com.se.data.Posting;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
-import com.se.db.DatabaseUtil;
 import com.se.index.WordsTokenizer;
 
 public class TagWeightCalculator implements ScoringAlgorithm {
 
-	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
 	private Map<String, InvertedIndex> tokenToInvertedIndex;
 
@@ -26,7 +24,6 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 	public TagWeightCalculator(Map<Integer, SearchResult> searchresults,
 			Map<String, InvertedIndex> tokenToInvertedIndex) {
 		this.searchResults = searchresults;
-		this.databaseUtil = DatabaseUtil.create();
 		this.tokenToInvertedIndex = tokenToInvertedIndex;
 	}
 
@@ -39,7 +36,6 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
 				.toLowerCase())) {
 			InvertedIndex invertedIndex = tokenToInvertedIndex.get(term);
-//			InvertedIndex invertedIndex = databaseUtil.searchInvertedIndex(term);			
 			if (invertedIndex == null) {
 				continue;
 			}

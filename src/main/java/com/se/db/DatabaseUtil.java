@@ -82,9 +82,13 @@ public class DatabaseUtil {
 		return result.getScore();
 	}
 
-	public void close() {
+	public static void close() {
+		if(databaseUtil == null){
+			return;
+		}
+		databaseUtil.mongoClient.close();
 		databaseUtil = null;
-		mongoClient.close();
+		return;
 	}
 
 	public AnchorTextToken searchAnchorText(String term) {

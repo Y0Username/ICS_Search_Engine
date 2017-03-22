@@ -1,4 +1,4 @@
-package com.se.algorithm;
+package com.se.index;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,11 +25,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import com.google.gson.Gson;
+import com.se.algorithm.TermSourceTarget;
 import com.se.data.AnchorPosting;
 import com.se.data.AnchorTextToken;
 import com.se.db.DatabaseUtil;
 import com.se.file.FileHandler;
-import com.se.index.WordsTokenizer;
 
 public class AnchorTextProcessingMR {
 	private static final String PATH = "path";
@@ -198,7 +198,7 @@ public class AnchorTextProcessingMR {
 		FileSystem fs = FileSystem.get(new Configuration());
 		fs.delete(new Path("target/temp/anchorMR"), true);
 
-		db.close();
+		DatabaseUtil.close();
 	}
 
 }

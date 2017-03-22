@@ -1,4 +1,4 @@
-package com.se.algorithm;
+package com.se.index;
 
 import java.io.File;
 import java.io.IOException;
@@ -134,7 +134,7 @@ public class PageRankAlgorithmMR {
 			docPageranks.add(docPagerank);
 		}
 		db.insert(docPageranks);
-		db.close();
+		DatabaseUtil.close();
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException, InterruptedException {
