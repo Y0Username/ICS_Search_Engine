@@ -15,6 +15,7 @@ import com.se.index.WordsTokenizer;
 public class AnchorTextCalculator implements ScoringAlgorithm {
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
+	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
 
 	public AnchorTextCalculator() {
 		this(new HashMap<Integer, SearchResult>());
@@ -27,14 +28,23 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 
 	@Override
 	public Map<Integer, SearchResult> calculate(String query) {
-		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
+		if (ScoreType.ANCHOR_TEXT.isDisabled()) {
+			return searchResults;
+		}
+
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
+				.toLowerCase())) {
 			AnchorTextToken anchorTextToken = databaseUtil
 					.searchAnchorText(term);
 			if (anchorTextToken == null) {
 				continue;
 			}
 			List<AnchorPosting> postings = anchorTextToken.getTargetDocIds();
-			for (AnchorPosting posting : postings) {
+
+			int noOfSearchResults = Math.min(MAX_SEARCH_RESULTS_PER_TERM,
+					postings.size());
+			for (int i = 0; i < noOfSearchResults; i++) {
+				AnchorPosting posting = postings.get(i);
 				SearchResult searchResult;
 				Integer docId = posting.getDocID();
 				if (searchResults.containsKey(docId)) {
@@ -45,7 +55,8 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 					searchResult.setDocument(document);
 					searchResults.put(docId, searchResult);
 				}
-				searchResult.addScore(ScoreType.ANCHOR_TEXT, posting.getSourceDocIdsSize().doubleValue());
+				searchResult.addScore(ScoreType.ANCHOR_TEXT, posting
+						.getSourceDocIdsSize().doubleValue());
 			}
 		}
 

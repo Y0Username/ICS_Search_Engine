@@ -18,6 +18,7 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
+	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
 
 	public TagWeightCalculator() {
 		this(new HashMap<Integer, SearchResult>());
@@ -30,15 +31,22 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 
 	@Override
 	public Map<Integer, SearchResult> calculate(String query) {
+		if (ScoreType.TAGWEIGHT.isDisabled()) {
+			return searchResults;
+		}
 
-		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
+				.toLowerCase())) {
 			InvertedIndex invertedIndex = databaseUtil
 					.searchInvertedIndex(term);
 			if (invertedIndex == null) {
 				continue;
 			}
 			List<Posting> postings = invertedIndex.getPostings();
-			for (Posting posting : postings) {
+			int noOfSearchResults = Math.min(MAX_SEARCH_RESULTS_PER_TERM,
+					postings.size());
+			for (int i = 0; i < noOfSearchResults; i++) {
+				Posting posting = postings.get(i);
 				Integer docId = posting.getDocID();
 				SearchResult searchResult;
 				if (searchResults.containsKey(docId)) {

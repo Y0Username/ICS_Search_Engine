@@ -12,4 +12,8 @@ public enum ScoreType {
 	public double getScoringWeight() {
 		return scoringWeight;
 	}
+
+	public boolean isDisabled() {
+		return scoringWeight == 0;
+	}
 }

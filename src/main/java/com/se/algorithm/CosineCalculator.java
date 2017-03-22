@@ -18,6 +18,7 @@ public class CosineCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
+	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
 
 	public CosineCalculator() {
 		this(new HashMap<Integer, SearchResult>());
@@ -30,8 +31,13 @@ public class CosineCalculator implements ScoringAlgorithm {
 
 	@Override
 	public Map<Integer, SearchResult> calculate(String query) {
+		if (ScoreType.COSINE.isDisabled()) {
+			return searchResults;
+		}
+
 		Map<String, Integer> queryTf = new HashMap<>();
-		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
+				.toLowerCase())) {
 			if (queryTf.containsKey(term)) {
 				queryTf.put(term, queryTf.get(term) + 1);
 			} else {
@@ -48,7 +54,10 @@ public class CosineCalculator implements ScoringAlgorithm {
 			List<Posting> postings = invertedIndex.getPostings();
 			Double idf = TfIdf.inverseDocFrequency(invertedIndex.getDocFrq());
 			Double qtfIdf = entry.getValue() * idf;
-			for (Posting posting : postings) {
+			int noOfSearchResults = Math.min(MAX_SEARCH_RESULTS_PER_TERM,
+					postings.size());
+			for (int i = 0; i < noOfSearchResults; i++) {
+				Posting posting = postings.get(i);
 				Integer docId = posting.getDocID();
 				Double tfIdf = posting.getTfidf();
 				SearchResult searchResult;
@@ -64,14 +73,13 @@ public class CosineCalculator implements ScoringAlgorithm {
 				searchResult.addPositions(posting.getPositions());
 			}
 		}
-		
+
 		for (SearchResult result : searchResults.values()) {
 			result.setScore(ScoreType.COSINE, result.getScore(ScoreType.COSINE)
 					/ result.getDocument().getDocLen());
 		}
-		
+
 		return searchResults;
 	}
-
 
 }
