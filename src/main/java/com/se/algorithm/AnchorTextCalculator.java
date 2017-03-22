@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.se.data.AnchorPosting;
 import com.se.data.AnchorTextToken;
-import com.se.data.Document;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
@@ -15,7 +14,6 @@ import com.se.index.WordsTokenizer;
 public class AnchorTextCalculator implements ScoringAlgorithm {
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
-	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
 
 	public AnchorTextCalculator() {
 		this(new HashMap<Integer, SearchResult>());
@@ -49,14 +47,9 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 				Integer docId = posting.getDocID();
 				if (searchResults.containsKey(docId)) {
 					searchResult = searchResults.get(docId);
-				} else {
-					searchResult = new SearchResult();
-					Document document = databaseUtil.searchDocument(docId);
-					searchResult.setDocument(document);
-					searchResults.put(docId, searchResult);
+					searchResult.addScore(ScoreType.ANCHOR_TEXT, posting
+							.getSourceDocIdsSize().doubleValue());
 				}
-				searchResult.addScore(ScoreType.ANCHOR_TEXT, posting
-						.getSourceDocIdsSize().doubleValue());
 			}
 		}
 

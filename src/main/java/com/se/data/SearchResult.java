@@ -39,11 +39,12 @@ public class SearchResult implements Comparable<SearchResult> {
 	}
 
 	public Double getTotalScore() {
-		Double score = 0.0;
+		Double inverseSum = 0.0;
 		for (Entry<ScoreType, Double> entry : scores.entrySet()) {
-			score += entry.getKey().getScoringWeight() * entry.getValue();
+			inverseSum += (1 / (entry.getKey().getScoringWeight() * entry
+					.getValue()));
 		}
-		return score;
+		return scores.size() / inverseSum;
 	}
 
 	public Document getDocument() {
@@ -96,6 +97,10 @@ public class SearchResult implements Comparable<SearchResult> {
 		return "SearchResult [document=" + document + ", scores=" + scores
 				+ ", snippet=" + snippet + ", positions=" + positions
 				+ ", title=" + title + "]";
+	}
+
+	public Map<ScoreType, Double> getScores() {
+		return scores;
 	}
 		
 }

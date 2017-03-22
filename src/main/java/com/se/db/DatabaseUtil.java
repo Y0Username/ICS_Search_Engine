@@ -1,7 +1,9 @@
 package com.se.db;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.BsonSerializationException;
 import org.mongodb.morphia.Datastore;
@@ -13,6 +15,7 @@ import com.se.data.AnchorTextToken;
 import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.PageRankData;
+import com.se.index.WordsTokenizer;
 
 public class DatabaseUtil {
 	private static final String DATABASE_NAME = "SearchEngine";
@@ -86,5 +89,16 @@ public class DatabaseUtil {
 
 	public AnchorTextToken searchAnchorText(String term) {
 		return searchById(AnchorTextToken.class, term);
+	}
+	
+	public Map<String, InvertedIndex> getInvertedIndexRows(String query){
+		Map<String, InvertedIndex> tokenToEntry = new HashMap<String, InvertedIndex>();
+		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
+				.toLowerCase())) {
+			InvertedIndex invertedIndex = databaseUtil
+					.searchInvertedIndex(term);
+			tokenToEntry.put(term, invertedIndex);
+		}
+		return tokenToEntry;
 	}
 }

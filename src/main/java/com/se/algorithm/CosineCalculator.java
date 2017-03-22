@@ -18,15 +18,16 @@ public class CosineCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
-	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
+	private Map<String, InvertedIndex> tokenToInvertedIndex;
 
-	public CosineCalculator() {
-		this(new HashMap<Integer, SearchResult>());
+	public CosineCalculator(Map<String, InvertedIndex> tokenToInvertedIndex) {
+		this(new HashMap<Integer, SearchResult>(), tokenToInvertedIndex);
 	}
 
-	public CosineCalculator(Map<Integer, SearchResult> searchresults) {
+	public CosineCalculator(Map<Integer, SearchResult> searchresults, Map<String, InvertedIndex> tokenToInvertedIndex) {
 		this.searchResults = searchresults;
 		this.databaseUtil = DatabaseUtil.create();
+		this.tokenToInvertedIndex = tokenToInvertedIndex;
 	}
 
 	@Override
@@ -46,8 +47,8 @@ public class CosineCalculator implements ScoringAlgorithm {
 		}
 
 		for (Entry<String, Integer> entry : queryTf.entrySet()) {
-			InvertedIndex invertedIndex = databaseUtil
-					.searchInvertedIndex(entry.getKey());
+			InvertedIndex invertedIndex = tokenToInvertedIndex.get(entry.getKey());
+//			InvertedIndex invertedIndex = databaseUtil.searchInvertedIndex(entry.getKey());			
 			if (invertedIndex == null) {
 				continue;
 			}

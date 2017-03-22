@@ -16,15 +16,17 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
-	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
+	private Map<String, InvertedIndex> tokenToInvertedIndex;
 
-	public TfIdfCalculator() {
-		this(new HashMap<Integer, SearchResult>());
+	public TfIdfCalculator(Map<String, InvertedIndex> tokenToInvertedIndex) {
+		this(new HashMap<Integer, SearchResult>(), tokenToInvertedIndex);
 	}
 
-	public TfIdfCalculator(Map<Integer, SearchResult> searchresults) {
+	public TfIdfCalculator(Map<Integer, SearchResult> searchresults,
+			Map<String, InvertedIndex> tokenToInvertedIndex) {
 		this.searchResults = searchresults;
 		this.databaseUtil = DatabaseUtil.create();
+		this.tokenToInvertedIndex = tokenToInvertedIndex;
 	}
 
 	@Override
@@ -35,8 +37,8 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
 				.toLowerCase())) {
-			InvertedIndex invertedIndex = databaseUtil
-					.searchInvertedIndex(term);
+			InvertedIndex invertedIndex = tokenToInvertedIndex.get(term);
+//			InvertedIndex invertedIndex = databaseUtil.searchInvertedIndex(term);			
 			if (invertedIndex == null) {
 				continue;
 			}

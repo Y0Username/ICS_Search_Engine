@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.se.data.Document;
 import com.se.data.InvertedIndex;
 import com.se.data.Posting;
 import com.se.data.ScoreType;
@@ -18,15 +17,17 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 
 	private DatabaseUtil databaseUtil;
 	private Map<Integer, SearchResult> searchResults;
-	private static final int MAX_SEARCH_RESULTS_PER_TERM = 50;
+	private Map<String, InvertedIndex> tokenToInvertedIndex;
 
-	public TagWeightCalculator() {
-		this(new HashMap<Integer, SearchResult>());
+	public TagWeightCalculator(Map<String, InvertedIndex> tokenToInvertedIndex) {
+		this(new HashMap<Integer, SearchResult>(), tokenToInvertedIndex);
 	}
 
-	public TagWeightCalculator(Map<Integer, SearchResult> searchresults) {
+	public TagWeightCalculator(Map<Integer, SearchResult> searchresults,
+			Map<String, InvertedIndex> tokenToInvertedIndex) {
 		this.searchResults = searchresults;
 		this.databaseUtil = DatabaseUtil.create();
+		this.tokenToInvertedIndex = tokenToInvertedIndex;
 	}
 
 	@Override
@@ -37,8 +38,8 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query
 				.toLowerCase())) {
-			InvertedIndex invertedIndex = databaseUtil
-					.searchInvertedIndex(term);
+			InvertedIndex invertedIndex = tokenToInvertedIndex.get(term);
+//			InvertedIndex invertedIndex = databaseUtil.searchInvertedIndex(term);			
 			if (invertedIndex == null) {
 				continue;
 			}
@@ -51,25 +52,24 @@ public class TagWeightCalculator implements ScoringAlgorithm {
 				SearchResult searchResult;
 				if (searchResults.containsKey(docId)) {
 					searchResult = searchResults.get(docId);
-				} else {
-					searchResult = new SearchResult();
-					Document document = databaseUtil.searchDocument(docId);
-					searchResult.setDocument(document);
-					searchResults.put(docId, searchResult);
-				}
-				double score = 0.0;
-				for (String tag : posting.getTags()) {
-					if (HTML_TAGS.containsKey(tag)) {
-						score += HTML_TAGS.get(tag);
-					}
-				}
-
-				searchResult.addScore(ScoreType.TAGWEIGHT, score);
-				searchResult.addPositions(posting.getPositions());
+					calculateTagWeights(posting, searchResult);
+				} 
 			}
 		}
 
 		return searchResults;
+	}
+
+	private void calculateTagWeights(Posting posting, SearchResult searchResult) {
+		double score = 0.0;
+		for (String tag : posting.getTags()) {
+			if (HTML_TAGS.containsKey(tag)) {
+				score += HTML_TAGS.get(tag);
+			}
+		}
+
+		searchResult.addScore(ScoreType.TAGWEIGHT, score);
+		searchResult.addPositions(posting.getPositions());
 	}
 
 }

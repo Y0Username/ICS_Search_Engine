@@ -1,7 +1,7 @@
 package com.se.data;
 
 public enum ScoreType {
-	COSINE(0.5), TFIDF(0.5), TAGWEIGHT(0.5), PAGERANK(1000), ANCHOR_TEXT(10);
+	COSINE(0.4), TFIDF(0), TAGWEIGHT(0.15), PAGERANK(0.4), ANCHOR_TEXT(0.05);
 
 	private double scoringWeight;
 
