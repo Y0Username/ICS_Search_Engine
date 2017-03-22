@@ -1,8 +1,10 @@
 package com.se.query;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.se.algorithm.AnchorTextCalculator;
@@ -21,17 +23,19 @@ import com.se.util.NDCG;
 public class QueryRunner {
 
 	public List<SearchResult> search(String query) {
+		Map<Integer, SearchResult> searchResults;
 		ScoringAlgorithm tfIdfCalculator = new TfIdfCalculator();
-		List<SearchResult> results = tfIdfCalculator.calculate(query);
+		searchResults = tfIdfCalculator.calculate(query);
 		ScoringAlgorithm cosineCalculator = new CosineCalculator(
-				tfIdfCalculator.getSearchResults());
-		results = cosineCalculator.calculate(query);
+				searchResults);
+		searchResults = cosineCalculator.calculate(query);
 		ScoringAlgorithm anchorTextCalculator = new AnchorTextCalculator(
-				cosineCalculator.getSearchResults());
-		anchorTextCalculator.calculate(query);
+				searchResults);
+		searchResults = anchorTextCalculator.calculate(query);
 		ScoringAlgorithm tagWeightCalculator = new TagWeightCalculator(
-				anchorTextCalculator.getSearchResults());
-		results = tagWeightCalculator.calculate(query);
+				searchResults);
+		searchResults = tagWeightCalculator.calculate(query);
+		List<SearchResult> results = new ArrayList<>(searchResults.values());
 
 		Collections.sort(results);
 		int NUMBER_OF_SEARCH_RESULTS = results.size();

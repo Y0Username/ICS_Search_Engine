@@ -1,6 +1,5 @@
 package com.se.algorithm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 	}
 
 	@Override
-	public List<SearchResult> calculate(String query) {
+	public Map<Integer, SearchResult> calculate(String query) {
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			AnchorTextToken anchorTextToken = databaseUtil
 					.searchAnchorText(term);
@@ -50,12 +49,6 @@ public class AnchorTextCalculator implements ScoringAlgorithm {
 			}
 		}
 
-		List<SearchResult> results = new ArrayList<>(searchResults.values());
-		return results;
-	}
-
-	@Override
-	public Map<Integer, SearchResult> getSearchResults() {
 		return searchResults;
 	}
 

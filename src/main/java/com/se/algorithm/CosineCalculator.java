@@ -1,6 +1,5 @@
 package com.se.algorithm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +11,8 @@ import com.se.data.Posting;
 import com.se.data.ScoreType;
 import com.se.data.SearchResult;
 import com.se.db.DatabaseUtil;
-import com.se.index.WordsTokenizer;
 import com.se.index.TfIdf;
+import com.se.index.WordsTokenizer;
 
 public class CosineCalculator implements ScoringAlgorithm {
 
@@ -30,7 +29,7 @@ public class CosineCalculator implements ScoringAlgorithm {
 	}
 
 	@Override
-	public List<SearchResult> calculate(String query) {
+	public Map<Integer, SearchResult> calculate(String query) {
 		Map<String, Integer> queryTf = new HashMap<>();
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			if (queryTf.containsKey(term)) {
@@ -65,22 +64,14 @@ public class CosineCalculator implements ScoringAlgorithm {
 				searchResult.addPositions(posting.getPositions());
 			}
 		}
-
-		return normalize();
-	}
-
-	private List<SearchResult> normalize() {
-		List<SearchResult> results = new ArrayList<>(searchResults.values());
-		for (SearchResult result : results) {
+		
+		for (SearchResult result : searchResults.values()) {
 			result.setScore(ScoreType.COSINE, result.getScore(ScoreType.COSINE)
 					/ result.getDocument().getDocLen());
 		}
-		return results;
-	}
-
-	@Override
-	public Map<Integer, SearchResult> getSearchResults() {
+		
 		return searchResults;
 	}
+
 
 }

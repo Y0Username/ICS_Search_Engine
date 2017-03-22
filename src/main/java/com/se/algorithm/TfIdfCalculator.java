@@ -1,6 +1,5 @@
 package com.se.algorithm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 	}
 
 	@Override
-	public List<SearchResult> calculate(String query) {
+	public Map<Integer, SearchResult> calculate(String query) {
 
 		for (String term : WordsTokenizer.tokenizeWithStemmingFilterStop(query.toLowerCase())) {
 			InvertedIndex invertedIndex = databaseUtil
@@ -54,8 +53,7 @@ public class TfIdfCalculator implements ScoringAlgorithm {
 			}
 		}
 
-		List<SearchResult> results = new ArrayList<>(searchResults.values());
-		return results;
+		return searchResults;
 	}
 
 	public Map<Integer, SearchResult> getSearchResults() {
